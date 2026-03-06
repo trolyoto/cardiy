@@ -1,65 +1,78 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main style={{fontFamily:"Arial",padding:40}}>
+
+      <h1>CARDIY</h1>
+      <h2>Trợ lý ô tô thông minh</h2>
+
+      <p>Nền tảng kết nối chủ xe và garage.</p>
+
+      <h3>Dịch vụ nhanh</h3>
+
+      <div style={{display:"flex",gap:20,flexWrap:"wrap"}}>
+
+        <a href="/service"><button style={btn}>Bảo dưỡng</button></a>
+
+        <a href="/inspection"><button style={btn}>Kiểm tra xe</button></a>
+
+        <a href="/garage"><button style={btn}>Garage gần nhất</button></a>
+
+        <a href="/vehicle"><button style={btn}>Hồ sơ xe</button></a>
+
+      </div>
+
+      <h3 style={{marginTop:40}}>Ưu đãi theo thương hiệu</h3>
+
+      <div style={{display:"flex",gap:20,flexWrap:"wrap"}}>
+
+        <div style={card}>
+          <h4>Michelin</h4>
+          <p>Giảm giá thay lốp 10%</p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div style={card}>
+          <h4>Bridgestone</h4>
+          <p>Tặng cân chỉnh thước lái</p>
         </div>
-      </main>
-    </div>
-  );
+
+        <div style={card}>
+          <h4>Kumho</h4>
+          <p>Ưu đãi thay 4 lốp</p>
+        </div>
+
+      </div>
+
+      <h3 style={{marginTop:40}}>Blog ô tô</h3>
+
+      <div style={{display:"flex",gap:20}}>
+
+        <div style={card}>
+          <h4>Khi nào cần thay lốp?</h4>
+          <p>Dấu hiệu nhận biết lốp mòn.</p>
+        </div>
+
+        <div style={card}>
+          <h4>Bảo dưỡng 5000km</h4>
+          <p>Những hạng mục cần kiểm tra.</p>
+        </div>
+
+      </div>
+
+    </main>
+  )
+}
+
+const btn = {
+padding:"12px 20px",
+background:"#2563eb",
+color:"white",
+border:"none",
+borderRadius:"8px"
+}
+
+const card = {
+background:"#f1f5f9",
+padding:"20px",
+borderRadius:"10px",
+width:"220px"
 }
