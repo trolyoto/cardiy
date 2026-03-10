@@ -54,6 +54,9 @@ export default function Home() {
         <button style={btn}>Đặt Lịch Bảo Dưỡng</button>
 
         <button style={btn}>Blog Kiến Thức</button>
+        <a href="/phieu_cap_bao_duong.html">
+<button>Phiếu Cấp Bảo Dưỡng</button>
+</a>
 
       </div>
 
