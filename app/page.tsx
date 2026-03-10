@@ -1,198 +1,185 @@
-export default function Home(){
+<!DOCTYPE html>
+<html>
 
-const card={
-background:"white",
-padding:"25px",
-borderRadius:"12px",
-boxShadow:"0 2px 12px rgba(0,0,0,0.08)",
-textAlign:"center",
-fontWeight:"bold",
-color:"#0a3d91",
-cursor:"pointer"
+<head>
+
+<meta charset="UTF-8">
+
+<title>Trợ Lý Ô Tô</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f4f6f8;
 }
 
-return(
+/* HEADER */
 
-<div style={{
-display:"flex",
-fontFamily:"Arial",
-background:"#f4f6f8",
-minHeight:"100vh"
-}}>
-
-{/* SIDEBAR */}
-
-<div style={{
-width:"240px",
-background:"#0a3d91",
-color:"white",
-padding:"25px"
-}}>
-
-<h2>CARDIY</h2>
-<p style={{fontSize:"13px"}}>Trợ Lý Ô Tô</p>
-
-<hr/>
-
-<p>🚗 SERVICE</p>
-
-<a href="/kiemtra_xe.html" style={menu}>Kiểm tra xe</a>
-<a href="/phieu_kiem_tra_lop.html" style={menu}>Kiểm tra lốp</a>
-<a href="/kiemtragam.html" style={menu}>Kiểm tra gầm</a>
-
-<p style={{marginTop:"20px"}}>🛠 WORKSHOP</p>
-
-<a href="/phieunhandichvu.html" style={menu}>Phiếu nhận xe</a>
-<a href="/phieu_sua_chua.html" style={menu}>Phiếu sửa chữa</a>
-
-<p style={{marginTop:"20px"}}>👥 CUSTOMER</p>
-
-<a href="/crm_khach_hang.html" style={menu}>CRM khách hàng</a>
-<a href="/lich_su_xe.html" style={menu}>Lịch sử xe</a>
-
-<p style={{marginTop:"20px"}}>📅 BOOKING</p>
-
-<a href="/phieu_cap_bao_duong.html" style={menu}>Đặt lịch bảo dưỡng</a>
-
-<p style={{marginTop:"20px"}}>✍️ BLOG</p>
-
-<a href="/blog.html" style={menu}>Viết bài chia sẻ</a>
-
-</div>
-
-
-{/* MAIN */}
-
-<div style={{flex:1,padding:"40px"}}>
-
-<h1 style={{color:"#0a3d91"}}>
-TRẠM DỊCH VỤ CARDIY
-</h1>
-
-<p>Trợ lý thông minh cho gara và chủ xe.</p>
-
-
-{/* THỐNG KÊ */}
-
-<div style={{
-display:"grid",
-gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",
-gap:"20px",
-marginTop:"30px"
-}}>
-
-<div style={{...card,background:"#4f46e5",color:"white"}}>
-🚗
-<br/><br/>
-Xe đang sửa
-<br/>
-<h2>5</h2>
-</div>
-
-<div style={{...card,background:"#22c55e",color:"white"}}>
-📅
-<br/><br/>
-Lịch hôm nay
-<br/>
-<h2>8</h2>
-</div>
-
-<div style={{...card,background:"#f59e0b",color:"white"}}>
-💰
-<br/><br/>
-Doanh thu ngày
-<br/>
-<h2>12M</h2>
-</div>
-
-<div style={{...card,background:"#ef4444",color:"white"}}>
-⚠️
-<br/><br/>
-Xe cần bảo dưỡng
-<br/>
-<h2>6</h2>
-</div>
-
-</div>
-
-
-{/* MODULE CHỨC NĂNG */}
-
-<div style={{
-display:"grid",
-gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",
-gap:"20px",
-marginTop:"40px"
-}}>
-
-<a href="/kiemtra_xe.html" style={{textDecoration:"none"}}>
-<div style={card}>
-🚗<br/><br/>Kiểm tra xe
-</div>
-</a>
-
-<a href="/phieu_kiem_tra_lop.html" style={{textDecoration:"none"}}>
-<div style={card}>
-🛞<br/><br/>Kiểm tra lốp
-</div>
-</a>
-
-<a href="/kiemtragam.html" style={{textDecoration:"none"}}>
-<div style={card}>
-🔧<br/><br/>Kiểm tra gầm
-</div>
-</a>
-
-<a href="/phieunhandichvu.html" style={{textDecoration:"none"}}>
-<div style={card}>
-📄<br/><br/>Phiếu nhận xe
-</div>
-</a>
-
-<a href="/phieu_sua_chua.html" style={{textDecoration:"none"}}>
-<div style={card}>
-🛠<br/><br/>Phiếu sửa chữa
-</div>
-</a>
-
-<a href="/crm_khach_hang.html" style={{textDecoration:"none"}}>
-<div style={card}>
-👥<br/><br/>CRM khách hàng
-</div>
-</a>
-
-<a href="/lich_su_xe.html" style={{textDecoration:"none"}}>
-<div style={card}>
-📊<br/><br/>Lịch sử xe
-</div>
-</a>
-
-<a href="/phieu_cap_bao_duong.html" style={{textDecoration:"none"}}>
-<div style={card}>
-📅<br/><br/>Đặt lịch bảo dưỡng
-</div>
-</a>
-
-<a href="/blog.html" style={{textDecoration:"none"}}>
-<div style={card}>
-✍️<br/><br/>Blog chia sẻ
-</div>
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
+header{
+background:#111;
+color:white;
+padding:15px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
-const menu={
-display:"block",
-padding:"8px",
-color:"white",
-textDecoration:"none",
-fontSize:"14px"
+.logo{
+color:#FFD400;
+font-weight:bold;
+font-size:22px;
 }
+
+nav a{
+color:white;
+margin-left:20px;
+text-decoration:none;
+}
+
+/* HERO */
+
+.hero{
+height:420px;
+background:linear-gradient(
+rgba(0,0,0,0.7),
+rgba(0,0,0,0.7)
+),
+url("https://images.unsplash.com/photo-1503376780353-7e6692767b70");
+background-size:cover;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+text-align:center;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero span{
+color:#FFD400;
+}
+
+/* MODULE */
+
+.modules{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:60px;
+}
+
+.card{
+height:220px;
+border-radius:12px;
+padding:25px;
+color:white;
+font-size:22px;
+font-weight:bold;
+display:flex;
+align-items:flex-end;
+transition:0.3s;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+/* CARD COLORS */
+
+.card1{
+background:linear-gradient(135deg,#0a3d91,#1e90ff);
+}
+
+.card2{
+background:linear-gradient(135deg,#111,#444);
+}
+
+.card3{
+background:linear-gradient(135deg,#0a3d91,#00aaff);
+}
+
+.card4{
+background:linear-gradient(135deg,#111,#0a3d91);
+}
+
+/* FOOTER */
+
+footer{
+background:#111;
+color:white;
+padding:30px;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+TRỢ LÝ Ô TÔ
+</div>
+
+<nav>
+
+<a href="#">Quản lý xe</a>
+<a href="#">Sản phẩm</a>
+<a href="#">Ưu đãi</a>
+<a href="#">Chia sẻ</a>
+
+</nav>
+
+</header>
+
+
+<div class="hero">
+
+<div>
+
+<h1>Trợ Lý <span>Ô Tô Thông Minh</span></h1>
+
+<p>Kết nối chủ xe và gara chuyên nghiệp</p>
+
+</div>
+
+</div>
+
+
+<div class="modules">
+
+<div class="card card1">
+Mạng lưới đại lý / gara
+</div>
+
+<div class="card card2">
+Quản lý hồ sơ xe
+</div>
+
+<div class="card card3">
+Quản lý chi tiêu xe
+</div>
+
+<div class="card card4">
+Kiến thức xe chuyên sâu
+</div>
+
+</div>
+
+
+<footer>
+
+© 2026 Trợ Lý Ô Tô
+
+</footer>
+
+</body>
+
+</html>
