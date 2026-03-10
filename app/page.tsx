@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="vi">
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Trợ Lý Ô Tô</title>
+<title>CARDIY - Trợ Lý Ô Tô</title>
 
 <style>
+
+/* GENERAL */
 
 body{
 margin:0;
@@ -27,15 +29,19 @@ align-items:center;
 }
 
 .logo{
-color:#FFD400;
-font-weight:bold;
 font-size:22px;
+font-weight:bold;
+color:#FFD400;
 }
 
 nav a{
 color:white;
-margin-left:20px;
+margin-left:25px;
 text-decoration:none;
+}
+
+nav a:hover{
+color:#FFD400;
 }
 
 /* HERO */
@@ -43,68 +49,113 @@ text-decoration:none;
 .hero{
 height:420px;
 background:linear-gradient(
-rgba(0,0,0,0.7),
-rgba(0,0,0,0.7)
+rgba(0,0,0,0.8),
+rgba(0,0,0,0.8)
 ),
 url("https://images.unsplash.com/photo-1503376780353-7e6692767b70");
 background-size:cover;
 display:flex;
 align-items:center;
 justify-content:center;
-color:white;
 text-align:center;
+color:white;
 }
 
 .hero h1{
-font-size:42px;
+font-size:40px;
 }
 
 .hero span{
 color:#FFD400;
 }
 
-/* MODULE */
+/* CAR ANIMATION */
 
-.modules{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:20px;
+.road{
+width:100%;
+height:120px;
+background:#222;
+overflow:hidden;
+position:relative;
+}
+
+.car{
+width:200px;
+position:absolute;
+bottom:10px;
+animation:drive 10s linear infinite;
+}
+
+@keyframes drive{
+0%{left:-200px}
+100%{left:100%}
+}
+
+/* DASHBOARD */
+
+.dashboard{
 padding:60px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
 }
 
 .card{
-height:220px;
+background:white;
 border-radius:12px;
-padding:25px;
-color:white;
-font-size:22px;
+padding:30px;
+box-shadow:0 10px 20px rgba(0,0,0,0.1);
+text-align:center;
+font-size:20px;
 font-weight:bold;
-display:flex;
-align-items:flex-end;
-transition:0.3s;
+color:#0a3d91;
 cursor:pointer;
+transition:0.3s;
 }
 
 .card:hover{
-transform:translateY(-5px);
+transform:translateY(-6px);
 }
 
-/* CARD COLORS */
+/* CRM TABLE */
 
-.card1{
-background:linear-gradient(135deg,#0a3d91,#1e90ff);
+.crm{
+padding:60px;
 }
 
-.card2{
-background:linear-gradient(135deg,#111,#444);
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+box-shadow:0 5px 10px rgba(0,0,0,0.1);
 }
 
-.card3{
-background:linear-gradient(135deg,#0a3d91,#00aaff);
+th{
+background:#0a3d91;
+color:white;
+padding:12px;
 }
 
-.card4{
-background:linear-gradient(135deg,#111,#0a3d91);
+td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+/* MAINTENANCE */
+
+.maintenance{
+padding:60px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.reminder{
+background:#FFD400;
+padding:25px;
+border-radius:10px;
+text-align:center;
+font-weight:bold;
 }
 
 /* FOOTER */
@@ -125,15 +176,16 @@ text-align:center;
 <header>
 
 <div class="logo">
-TRỢ LÝ Ô TÔ
+CARDIY
 </div>
 
 <nav>
 
-<a href="#">Quản lý xe</a>
-<a href="#">Sản phẩm</a>
-<a href="#">Ưu đãi</a>
-<a href="#">Chia sẻ</a>
+<a href="#">Dashboard</a>
+<a href="#">Gara</a>
+<a href="#">CRM</a>
+<a href="#">Booking</a>
+<a href="#">Blog</a>
 
 </nav>
 
@@ -146,39 +198,105 @@ TRỢ LÝ Ô TÔ
 
 <h1>Trợ Lý <span>Ô Tô Thông Minh</span></h1>
 
-<p>Kết nối chủ xe và gara chuyên nghiệp</p>
+<p>Hệ sinh thái quản lý xe và gara</p>
 
 </div>
 
 </div>
 
 
-<div class="modules">
+<div class="road">
 
-<div class="card card1">
-Mạng lưới đại lý / gara
-</div>
-
-<div class="card card2">
-Quản lý hồ sơ xe
-</div>
-
-<div class="card card3">
-Quản lý chi tiêu xe
-</div>
-
-<div class="card card4">
-Kiến thức xe chuyên sâu
-</div>
+<img class="car"
+src="https://cdn.pixabay.com/photo/2013/07/13/10/07/car-156106_1280.png">
 
 </div>
+
+
+<section class="dashboard">
+
+<div class="card">
+🚗 Kiểm tra xe
+</div>
+
+<div class="card">
+🛞 Kiểm tra lốp
+</div>
+
+<div class="card">
+🔧 Kiểm tra gầm
+</div>
+
+<div class="card">
+📄 Phiếu nhận xe
+</div>
+
+<div class="card">
+🛠 Phiếu sửa chữa
+</div>
+
+<div class="card">
+📅 Đặt lịch bảo dưỡng
+</div>
+
+</section>
+
+
+<section class="crm">
+
+<h2>CRM Khách Hàng</h2>
+
+<table>
+
+<tr>
+<th>Tên</th>
+<th>SĐT</th>
+<th>Xe</th>
+<th>Doanh thu</th>
+</tr>
+
+<tr>
+<td>Nguyễn Văn A</td>
+<td>0901234567</td>
+<td>Toyota Vios</td>
+<td>5.000.000</td>
+</tr>
+
+<tr>
+<td>Trần Văn B</td>
+<td>0912345678</td>
+<td>Kia Seltos</td>
+<td>8.000.000</td>
+</tr>
+
+</table>
+
+</section>
+
+
+<section class="maintenance">
+
+<div class="reminder">
+🔔 Bảo dưỡng 5000 km
+</div>
+
+<div class="reminder">
+🔔 Bảo dưỡng 10000 km
+</div>
+
+<div class="reminder">
+🔔 Bảo dưỡng 20000 km
+</div>
+
+</section>
 
 
 <footer>
 
-© 2026 Trợ Lý Ô Tô
+© 2026 CARDIY - Trợ Lý Ô Tô
 
 </footer>
+
 
 </body>
 
