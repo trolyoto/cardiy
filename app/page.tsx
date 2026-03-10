@@ -6,21 +6,19 @@ export default function Home() {
       fontFamily:"Arial",
       background:"#f4f6f8",
       minHeight:"100vh",
-      padding:40
+      padding:"40px"
     }}>
-
-      {/* HEADER */}
 
       <div style={{
         display:"flex",
         alignItems:"center",
-        gap:20,
-        marginBottom:40
+        gap:"20px",
+        marginBottom:"40px"
       }}>
 
         <img 
         src="/logo.png"
-        style={{height:60}}
+        style={{height:"60px"}}
         />
 
         <div>
@@ -43,45 +41,22 @@ export default function Home() {
 
       </div>
 
-      {/* MENU */}
 
       <div style={{
 
         display:"grid",
         gridTemplateColumns:"repeat(auto-fit,200px)",
-        gap:20
+        gap:"20px"
 
       }}>
 
-        <a href="#">
-          <button style={buttonStyle}>
-            Kiểm Tra Xe
-          </button>
-        </a>
+        <button style={btn}>Kiểm Tra Xe</button>
 
-        <a href="#">
-          <button style={buttonStyle}>
-            Kiểm Tra Gầm
-          </button>
-        </a>
+        <button style={btn}>Kiểm Tra Gầm</button>
 
-        <a href="#">
-          <button style={buttonStyle}>
-            Đặt Lịch Bảo Dưỡng
-          </button>
-        </a>
+        <button style={btn}>Đặt Lịch Bảo Dưỡng</button>
 
-        <a href="#">
-          <button style={buttonStyle}>
-            Blog Ô Tô
-          </button>
-        </a>
-
-        <a href="#">
-          <button style={buttonStyle}>
-            Ưu Đãi Garage
-          </button>
-        </a>
+        <button style={btn}>Blog Kiến Thức</button>
 
       </div>
 
@@ -91,7 +66,7 @@ export default function Home() {
 
 }
 
-const buttonStyle = {
+const btn = {
 
   background:"#0033A0",
   color:"white",
@@ -99,7 +74,6 @@ const buttonStyle = {
   padding:"15px",
   borderRadius:"8px",
   fontSize:"16px",
-  cursor:"pointer",
-  width:"200px"
+  cursor:"pointer"
 
 }
