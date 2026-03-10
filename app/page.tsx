@@ -1,139 +1,158 @@
 export default function Home(){
 
-const btnStyle = {
-background:"#0a3d91",
-color:"white",
-padding:"14px 28px",
-borderRadius:"8px",
-border:"none",
-fontSize:"16px",
-cursor:"pointer",
-marginRight:"15px",
-marginTop:"15px",
-minWidth:"200px"
+const menuTitle={
+fontSize:"14px",
+color:"#999",
+marginTop:"25px",
+marginBottom:"10px",
+fontWeight:"bold"
 }
 
-const subBtn = {
-background:"#ffffff",
-color:"#0a3d91",
-padding:"10px 20px",
+const menuItem={
+display:"block",
+padding:"10px",
 borderRadius:"6px",
-border:"2px solid #0a3d91",
-fontSize:"15px",
-cursor:"pointer",
-marginRight:"10px",
-marginTop:"10px"
+color:"#0a3d91",
+textDecoration:"none",
+marginBottom:"6px",
+background:"#ffffff"
 }
 
 return(
 
 <div style={{
+display:"flex",
 fontFamily:"Arial",
 background:"#f4f6f8",
-minHeight:"100vh",
+minHeight:"100vh"
+}}>
+
+{/* SIDEBAR */}
+
+<div style={{
+width:"250px",
+background:"#0a3d91",
+color:"white",
+padding:"25px"
+}}>
+
+<h2 style={{marginTop:0}}>
+CARDIY
+</h2>
+
+<p style={{fontSize:"13px"}}>
+Trợ Lý Ô Tô
+</p>
+
+
+{/* SERVICE */}
+
+<div style={menuTitle}>SERVICE</div>
+
+<a href="/kiemtra_xe.html" style={menuItem}>🚗 Kiểm tra xe</a>
+
+<a href="/phieu_kiem_tra_lop.html" style={menuItem}>🛞 Kiểm tra lốp</a>
+
+<a href="/kiemtragam.html" style={menuItem}>🔧 Kiểm tra gầm</a>
+
+
+{/* WORKSHOP */}
+
+<div style={menuTitle}>WORKSHOP</div>
+
+<a href="/phieunhandichvu.html" style={menuItem}>📄 Phiếu nhận xe</a>
+
+<a href="/phieu_sua_chua.html" style={menuItem}>🛠 Phiếu sửa chữa</a>
+
+
+{/* CUSTOMER */}
+
+<div style={menuTitle}>CUSTOMER</div>
+
+<a href="/crm_khach_hang.html" style={menuItem}>👥 CRM khách hàng</a>
+
+<a href="/lich_su_xe.html" style={menuItem}>📊 Lịch sử xe</a>
+
+
+{/* BOOKING */}
+
+<div style={menuTitle}>BOOKING</div>
+
+<a href="/phieu_cap_bao_duong.html" style={menuItem}>📅 Đặt lịch bảo dưỡng</a>
+
+
+{/* BLOG */}
+
+<div style={menuTitle}>BLOG</div>
+
+<a href="/blog.html" style={menuItem}>✍️ Viết bài chia sẻ</a>
+
+</div>
+
+
+{/* MAIN CONTENT */}
+
+<div style={{
+flex:1,
 padding:"40px"
 }}>
 
-{/* HEADER */}
-
-<div style={{
-display:"flex",
-alignItems:"center",
-gap:"20px"
-}}>
-
-<img
-src="/logo phi long.png"
-style={{
-width:"120px",
-background:"#ffd400",
-padding:"10px"
-}}
-/>
-
-<div>
-
-<h1 style={{
-margin:"0",
-color:"#0a3d91"
-}}>
-CARDIY
+<h1 style={{color:"#0a3d91"}}>
+TRẠM DỊCH VỤ CARDIY
 </h1>
 
-<p style={{
-margin:"0",
-color:"#555"
-}}>
-Trợ Lý Ô Tô Thông Minh
+<p>
+Nền tảng quản lý dịch vụ ô tô – kết nối chủ xe và garage.
 </p>
 
-</div>
 
-</div>
-
-
-{/* MENU CHÍNH */}
-
-<div style={{marginTop:"40px"}}>
-
-<button style={btnStyle}>
-🚗 Kiểm Tra Xe
-</button>
-
-<a href="/phieu_cap_bao_duong.html">
-<button style={btnStyle}>
-📋 Đặt Lịch Bảo Dưỡng
-</button>
-</a>
-
-<button style={btnStyle}>
-📘 Blog Kiến Thức
-</button>
-
-</div>
-
-
-{/* MODULE KIỂM TRA XE */}
-
-<div style={{marginTop:"30px"}}>
-
-<h3 style={{color:"#0a3d91"}}>
-Module Kiểm Tra Xe
-</h3>
-
-<a href="/kiemtra_lop.html">
-<button style={subBtn}>🛞 Kiểm Tra Lốp</button>
-</a>
-
-<a href="/kiemtra_gam.html">
-<button style={subBtn}>🔧 Kiểm Tra Gầm</button>
-</a>
-
-<a href="/phieu_nhan_xe.html">
-<button style={subBtn}>📄 Phiếu Nhận Xe</button>
-</a>
-
-<a href="/phieu_sua_chua.html">
-<button style={subBtn}>🛠 Phiếu Sửa Chữa</button>
-</a>
-
-<a href="/lich_su_xe.html">
-<button style={subBtn}>📊 Lịch Sử Xe</button>
-</a>
-
-</div>
-
-
-{/* FOOTER */}
+{/* DASHBOARD */}
 
 <div style={{
-marginTop:"80px",
-color:"#888",
-fontSize:"14px"
+marginTop:"40px",
+display:"grid",
+gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",
+gap:"25px"
 }}>
 
-CARDIY Automotive Platform  
-Phi Long Auto System
+<a href="/kiemtra_xe.html" style={{textDecoration:"none"}}>
+<div style={card}>🚗<br/>Kiểm tra xe</div>
+</a>
+
+<a href="/phieu_kiem_tra_lop.html" style={{textDecoration:"none"}}>
+<div style={card}>🛞<br/>Kiểm tra lốp</div>
+</a>
+
+<a href="/kiemtragam.html" style={{textDecoration:"none"}}>
+<div style={card}>🔧<br/>Kiểm tra gầm</div>
+</a>
+
+<a href="/phieunhandichvu.html" style={{textDecoration:"none"}}>
+<div style={card}>📄<br/>Phiếu nhận xe</div>
+</a>
+
+<a href="/phieu_sua_chua.html" style={{textDecoration:"none"}}>
+<div style={card}>🛠<br/>Phiếu sửa chữa</div>
+</a>
+
+<a href="/crm_khach_hang.html" style={{textDecoration:"none"}}>
+<div style={card}>👥<br/>CRM khách hàng</div>
+</a>
+
+<a href="/lich_su_xe.html" style={{textDecoration:"none"}}>
+<div style={card}>📊<br/>Lịch sử xe</div>
+</a>
+
+<a href="/phieu_cap_bao_duong.html" style={{textDecoration:"none"}}>
+<div style={card}>📅<br/>Đặt lịch bảo dưỡng</div>
+</a>
+
+<a href="/blog.html" style={{textDecoration:"none"}}>
+<div style={card}>✍️<br/>Blog chia sẻ</div>
+</a>
+
+</div>
+
 
 </div>
 
@@ -141,4 +160,14 @@ Phi Long Auto System
 
 )
 
+}
+
+const card={
+background:"white",
+padding:"25px",
+borderRadius:"12px",
+textAlign:"center",
+fontWeight:"bold",
+boxShadow:"0 2px 10px rgba(0,0,0,0.1)",
+color:"#0a3d91"
 }
