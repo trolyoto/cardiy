@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phiếu Kiểm Tra Lốp Xe - Phi Long</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+/* General Reset & Body Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 15px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    width: 800px;
+    padding: 12px 20px;
+    border: 2px solid #000;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex-grow: 1;
+}
+
+/* Header Section */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.header-left .logo-big {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: #1a2c67;
+    letter-spacing: 1.5px;
+    line-height: 0.9;
+    margin-bottom: 2px;
+}
+
+.header-left .logo-subtitle {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    color: #1a2c67;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.header-left .logo-subtitle span {
+    background-color: #f89e1e;
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+}
+
+.header-right {
+    font-family: 'Times New Roman', serif;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: bold;
+    text-align: right;
+    line-height: 1.2;
+    color: #333;
+    margin-top: 5px;
+}
+
+/* Form Fields Section */
+.form-fields {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    gap: 6px 12px;
+}
+
+.field-group {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: calc(50% - 10px);
+}
+
+.field-group:last-child {
+    flex-basis: 100%;
+}
+
+.field-label-bold {
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 5px;
+}
+
+.field-line {
+    flex-grow: 1;
+    border-bottom: 1px dotted #000;
+    height: 16px;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Tread Depth Legend */
+.tread-legend {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #333;
+}
+
+.tread-legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.color-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    border: 1px solid #444;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.green-box {
+    background-color: #378b27;
+}
+
+.yellow-triangle {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid #edcc31;
+    display: inline-block;
+    transform: translateY(-2px);
+    flex-shrink: 0;
+}
+
+.red-circle {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background-color: #b73232;
+    border: 1px solid #444;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+/* Section Title */
+.section-title {
+    background-color: #274888;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 0;
+    margin-bottom: 8px;
+    border-radius: 3px;
+    letter-spacing: 0.7px;
+}
+
+/* Main Inspection Container */
+.inspection-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+}
+
+/* Brake Pad Section (Left) */
+.brake-pad-section {
+    flex: 2;
+    border: 1.5px solid #274888;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.brake-pad-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: #000;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.brake-pad-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #3c5d8a;
+    position: relative;
+    background-color: #f0f5fa;
+    flex-shrink: 0;
+}
+
+.brake-pad-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background-color: #3c5d8a;
+    border-radius: 50%;
+    box-shadow: -8px 0 0 0 #3c5d8a, 8px 0 0 0 #3c5d8a;
+}
+
+.position-label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.position-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.position-row label {
+    width: 60px;
+    font-weight: normal;
+    flex-shrink: 0;
+}
+
+.input-line {
+    flex-grow: 1;
+    border-bottom: 1px dotted #000;
+    height: 16px;
+    display: inline-block;
+    width: 100%;
+}
+
+/* CSS cho phần gauges đã sửa */
+.gauges {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 50px;
+    position: relative;
+}
+ 
+.status-box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid #333;
+    border-radius: 3px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+}
+
+.status-box.active {
+    opacity: 1;
+    visibility: visible;
+    border: 1.5px solid #000;
+    box-shadow: 0 0 3px #000;
+}
+
+.status-green {
+    background-color: #2b7d20;
+}
+
+.status-yellow {
+    background-color: transparent;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 13px solid #eccf3d;
+    border: none;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+.status-yellow.active {
+    border-bottom: 13px solid #eccf3d;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    box-shadow: none;
+}
+
+.status-red {
+    background-color: #b12828;
+    border-radius: 50%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.note-row {
+    margin-top: 6px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+.note-row .input-line {
+    width: auto;
+    margin-left: 6px;
+}
+
+/* Warning Section (Right) */
+.warning-section {
+    flex: 1;
+    border: 1.5px solid #a81c1c;
+    border-radius: 5px;
+    padding: 8px 12px;
+}
+
+.warning-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #a81c1c;
+    border-bottom: 1px solid #a81c1c;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #555;
+    flex-shrink: 0;
+    accent-color: #000;
+}
+
+/* Tire Inspection Main Section */
+.tire-inspection-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+.tire-block-left {
+    flex-basis: 220px;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.tire-block-right {
+    flex-basis: 220px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.tire-block-inner {
+    border: 1.5px solid #274888;
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.tire-size-header {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    background-color: #274888;
+    color: #fff;
+    font-weight: bold;
+    font-size: 11px;
+    padding: 3px 5px;
+    border-radius: 3px 3px 0 0;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 0;
+    align-items: center;
+}
+
+.tire-size-header .tire-size-left {
+    border-right: 1.5px solid #fff;
+    padding-right: 3px;
+    text-align: center;
+}
+
+.tire-input-group {
+    border: 1.5px solid #274888;
+    border-top: none;
+    padding: 3px 5px;
+    font-size: 11px;
+    color: #333;
+}
+
+.tire-input-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.tire-input-item:last-child {
+    margin-bottom: 0;
+}
+
+.tire-input-item label {
+    width: 50px;
+    flex-shrink: 0;
+    font-weight: normal;
+    white-space: nowrap;
+    margin-right: 3px;
+}
+
+.tire-data-input {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 1px dotted #000;
+    height: 14px;
+    padding: 0;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #000;
+    outline: none;
+    width: 100%;
+}
+
+.dot-input-group {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    color: #333;
+    line-height: 1.2;
+    margin-top: 4px;
+    margin-bottom: 3px;
+}
+
+.dot-input-group label {
+    white-space: nowrap;
+    margin-right: 3px;
+    font-weight: normal;
+}
+
+.dot-data-input {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 1px dotted #000;
+    height: 14px;
+    padding: 0;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #000;
+    outline: none;
+    width: 100%;
+}
+
+.car-tire-diagram-wrapper {
+    flex-shrink: 0;
+    width: 140px;
+    margin: 0 6px;
+    position: relative;
+}
+
+.car-tire-diagram {
+    width: 150%;
+    height: 250px;
+    border: 2px solid #000;
+    border-radius: 15px;
+    background-image: url('sodooto.png');
+    background-size: 90% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    margin-left: -30px;
+}
+
+.steering-wheel {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 48px;
+    border: 2.5px solid #1a2c67;
+    border-radius: 40% 40% 55% 55% / 60% 60% 40% 40%;
+    box-shadow: inset 0 0 5px #1a2c67;
+    background: linear-gradient(145deg, #f8f9fa, #dee3ea);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: default;
+}
+
+.steering-wheel-inner {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 2px solid #1a2c67;
+    position: relative;
+}
+
+.right-vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+    border-left: 2px solid #274888;
+    padding-left: 6px;
+    margin-left: 8px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    letter-spacing: 0.05em;
+}
+
+.spare-tire-and-notes-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #601010;
+    line-height: 1.2;
+}
+
+.spare-tire-block {
+    flex-shrink: 0;
+    width: calc(100% / 3 - 6px);
+}
+
+.spare-tire-block .tire-block-inner {
+    border: 1.5px solid #274888;
+    border-radius: 5px;
+    padding: 6px;
+}
+
+.spare-tire-note {
+    flex: 1;
+    padding: 3px;
+}
+
+.spare-tire-note strong {
+    font-weight: bold;
+    color: #601010;
+}
+
+.car-note {
+    font-family: Arial, sans-serif;
+    font-style: italic;
+    font-size: 11px;
+    color: #a02020;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.dot-warning-message {
+    margin-top: 8px;
+    padding: 5px;
+    background-color: #fff3cd;
+    border: 1px solid #ffecb5;
+    border-radius: 4px;
+    color: #856404;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+    font-weight: bold;
+    display: none; /* Mặc định ẩn trên màn hình */
+}
+
+.price-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1.5px dotted #555;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+}
+.price-input-group input {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 1px dotted #000;
+    height: 16px;
+    padding: 0;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #000;
+    outline: none;
+    width: 100%;
+}
+
+.tire-status-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1.5px dotted #555;
+    font-family: Arial, sans-serif;
+}
+
+.tire-status-icon {
+    width: 28px;
+    height: 28px;
+    background: url('hientranglop.png') no-repeat center;
+    background-size: contain;
+    filter: none;
+    flex-shrink: 0;
+}
+
+.tire-status-textarea {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 1px dotted #000;
+    min-height: 35px;
+    font-size: 11px;
+    padding: 3px;
+    resize: none;
+    outline: none;
+    font-family: Arial, sans-serif;
+    line-height: 1.3;
+}
+
+.tire-status-textarea::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+.bottom-highlight {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    background-color: #fff94c;
+    border: 1.5px solid #d8b40a;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-family: Arial, sans-serif;
+    gap: 10px;
+}
+
+.bottom-highlight-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #3f3e1f;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.qr-code {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #555;
+    background: url('qr.png') center/cover no-repeat;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.bottom-icons-row {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    margin-top: auto;
+    padding-top: 10px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    border-top: 1px dotted #ccc;
+}
+
+.icon-item {
+    flex: 1 1 auto;
+    max-width: 65px;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #444;
+    line-height: 1.2;
+}
+
+.icon-item img {
+    max-width: 100%;
+    height: 40px;
+    object-fit: contain;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 3px;
+}
+
+.signature-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.signature-row > div {
+    flex: 1;
+}
+
+.signature-item {
+    border-bottom: 1px dotted #555;
+    padding-bottom: 2px;
+    min-height: 18px;
+    display: block;
+    width: 100%;
+}
+
+.signature-label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+/* Menu Buttons at top */
+.top-menu-buttons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background: #274888;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+.top-menu-buttons button {
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #f89e1e;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.top-menu-buttons button:hover {
+    background-color: #e58a00;
+}
+
+/* --- PRINT STYLES (A5) --- */
+@media print {
+    @page {
+        size: A5;
+        margin: 5mm;
+    }
+
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #fff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        height: 100% !important;
+        display: block !important;
+    }
+
+    .container {
+        width: 148mm !important;
+        min-height: 210mm !important;
+        box-shadow: none !important;
+        border: 2px solid #000 !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 5px 8px !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 210mm;
+    }
+
+    .main-content {
+        flex-grow: 1; /* Đảm bảo khối nội dung chính chiếm hết không gian còn lại */
+    }
+
+    .top-menu-buttons { display: none !important; }
+
+    /* Điều chỉnh lại font size và margin cho các khối đầu trang */
+    .header-top { margin-bottom: 3px !important; }
+    .header-left .logo-big { font-size: 24px !important; }
+    .header-left .logo-subtitle { font-size: 9px !important; }
+    .header-right { font-size: 8px !important; }
+
+    .form-fields {
+        font-size: 11px !important;
+        gap: 4px 3px !important;
+        margin-bottom: 2px !important;
+    }
+    .field-line { height: 16px !important; }
+    .field-label-bold { font-size: 11px !important; }
+
+    .tread-legend {
+        font-size: 7px !important;
+        gap: 5px !important;
+        margin-bottom: 3px !important;
+    }
+    .color-box { width: 8px !important; height: 8px !important; }
+    .yellow-triangle {
+        border-left: 4px solid transparent !important;
+        border-right: 4px solid transparent !important;
+        border-bottom: 7px solid #edcc31 !important;
+    }
+    .red-circle { width: 7px !important; height: 7px !important; }
+
+    .section-title {
+        font-size: 10px !important;
+        padding: 2px 0 !important;
+        margin-bottom: 3px !important;
+    }
+
+    .inspection-container {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 5px !important;
+        margin-bottom: 3px !important;
+        page-break-inside: avoid;
+    }
+    .brake-pad-section, .warning-section {
+        padding: 3px 5px !important;
+        flex: 1 !important;
+    }
+    .brake-pad-title { font-size: 10px !important; }
+    .position-label { font-size: 9px !important; }
+    .position-row { font-size: 8px !important; margin-bottom: 2px !important; }
+    .position-row label { width: 35px !important; }
+    .input-line { height: 10px !important; }
+    .gauges { gap: 1px !important; }
+    .status-box { width: 10px !important; height: 10px !important; }
+    .note-row { font-size: 8px !important; }
+    .warning-title { font-size: 9px !important; margin-bottom: 3px !important; }
+    .checkbox-group { font-size: 8px !important; gap: 3px !important; }
+    .checkbox-label input[type="checkbox"] { width: 10px !important; height: 10px !important; }
+
+    .tire-inspection-main {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: stretch !important;
+        gap: 2px !important;
+        width: 100% !important;
+        height: 240px !important;
+        margin-top: 1px !important; /* Đã điều chỉnh mạnh hơn */
+        margin-bottom: 1px !important; /* Đã điều chỉnh mạnh hơn */
+        page-break-inside: avoid !important;
+    }
+
+    .tire-block-left, .tire-block-right {
+        flex: 0 0 24% !important;
+        width: 24% !important;
+        min-width: 24% !important;
+        max-width: 24% !important;
+        margin: 0 !important;
+    }
+    .car-tire-diagram-wrapper {
+        flex: 0 0 50% !important;
+        width: 50% !important;
+        min-width: 50% !important;
+        max-width: 50% !important;
+        margin: 0 !important;
+        position: relative !important;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .car-tire-diagram {
+        width: 120px !important;
+        height: 200px !important;
+        border: 1px solid #000 !important;
+        background-size: 100% 100% !important;
+        margin-left: 0 !important;
+        background-image: url('sodooto.png') !important;
+    }
+    .steering-wheel {
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+        width: 25px !important;
+        height: 23px !important;
+        border-width: 1.5px !important;
+    }
+    .steering-wheel-inner { width: 15px !important; height: 15px !important; border-width: 1px !important; }
+    .right-vertical-text {
+        position: absolute !important;
+        right: -5px !important;
+        top: 0 !important;
+        height: 140px !important;
+        font-size: 8px !important;
+        border-left: 1px solid #274888 !important;
+        padding-left: 2px !important;
+        margin: 0 !important;
+    }
+    .tire-block-inner {
+        padding: 2px !important;
+        border: 1px solid #274888 !important;
+        min-height: 120px !important;
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+    }
+    .tire-size-header { font-size: 9px !important; padding: 2px 3px !important; }
+    .tire-input-group { font-size: 9px !important; padding: 2px 3px !important; }
+    .tire-input-item { margin-bottom: 3px !important; }
+    .tire-input-item label { width: 45px !important; font-size: 9px !important; }
+    .tire-data-input, .dot-data-input { font-size: 9px !important; height: 14px !important; }
+    .dot-input-group { font-size: 9px !important; margin-top: 3px !important; margin-bottom: 2px !important; }
+
+    /* Bố cục cho phần lốp dự phòng và ghi chú */
+    .spare-tire-and-notes-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-around !important;
+        align-items: flex-start !important;
+        margin-top: 0px !important; /* Đã điều chỉnh mạnh hơn */
+        font-size: 8px !important;
+        gap: 2px !important;
+        page-break-inside: avoid;
+    }
+    .spare-tire-note {
+        flex: 1 !important;
+        padding: 1px !important;
+		max-height: 60px !important;
+		overflow: hidden !important;
+		overflow-wrap: break-word !important;
+		word-break: break-word !important;
+		display: block;
+        margin-top: 20px !important; /* đẩy note xuống */
+		width: 120% !important;
+    }
+    .spare-tire-block {
+        flex-basis: 30% !important;
+        width: 30% !important;
+        min-width: 30% !important;
+        max-width: 30% !important;
+        
+        order: 0;
+        text-align: left;
+        margin: 0 3px;
+    }
+    .spare-tire-block .tire-block-inner {
+        min-height: 120px !important;
+    }
+
+    .car-note {
+        font-size: 8px !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        text-align: center !important;
+    }
+    
+    .dot-warning-message {
+        display: block !important;
+        font-size: 8px !important;
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        padding: 2px 4px !important;
+    }
+
+    .price-input-group {
+        display: flex !important;
+        align-items: center;
+        gap: 3px;
+        font-size: 10px !important;
+        font-weight: bold;
+        margin-top: 2px !important; /* Đã điều chỉnh mạnh hơn */
+        padding-top: 2px !important; /* Đã điều chỉnh mạnh hơn */
+    }
+    .price-input-group input {
+        height: 16px !important;
+        font-size: 10px !important;
+    }
+
+    .tire-status-bar {
+        margin-top: 2px !important; /* Đã điều chỉnh mạnh hơn */
+        padding-top: 2px !important; /* Đã điều chỉnh mạnh hơn */
+        border-top: 1px dotted #555 !important;
+        page-break-inside: avoid;
+        display: flex !important;
+        align-items: flex-start;
+    }
+    .tire-status-icon {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 3px;
+        width: 15px !important;
+        height: 15px !important;
+    }
+    .tire-status-textarea {
+        min-height: 25px !important;
+        font-size: 9px !important;
+        flex-grow: 1;
+    }
+
+    .bottom-highlight {
+        padding: 3px 5px !important;
+        margin-top: 2px !important; /* Đã điều chỉnh mạnh hơn */
+        display: flex;
+        flex-direction: row !important;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        page-break-inside: avoid;
+        flex-shrink: 0;
+        gap: 5px !important;
+        flex-basis: auto !important;
+    }
+    .bottom-highlight-text { font-size: 7px !important; white-space: normal; }
+    .qr-code { width: 50px !important; height: 50px !important; border: 1px solid #555 !important; margin-top: 0px !important; }
+    .bottom-icons-row {
+        margin-top: 2px !important; /* Đã điều chỉnh mạnh hơn */
+        padding-top: 3px !important;
+        border-top: 1px dotted #ccc !important;
+        gap: 3px 4px !important;
+        justify-content: space-around !important;
+        flex-wrap: wrap !important;
+        page-break-inside: avoid;
+    }
+    .icon-item {
+        font-size: 6px !important;
+        max-width: 30px !important;
+        flex: 0 0 10% !important;
+    }
+    .icon-item img { height: 18px !important; margin-bottom: 2px !important; border: 1px solid #ddd !important; }
+
+    .signature-row {
+        margin-top: 2px !important; /* Đã điều chỉnh mạnh hơn */
+        font-size: 8px !important;
+        gap: 4px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        page-break-inside: avoid !important;
+        text-align: center !important;
+    }
+    .signature-row > div {
+        flex: 1 !important;
+        max-width: 33% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+    .signature-item { min-height: 12px !important; display: block !important; width: 100% !important; }
+}
+
+/* Responsive adjustments for screen */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+    .header-left .logo-big { font-size: 36px; }
+    .header-left .logo-subtitle { font-size: 12px; }
+    .header-right { font-size: 11px; }
+
+    .form-fields {
+        font-size: 12px;
+        gap: 4px 8px;
+    }
+    .field-group { flex-basis: calc(50% - 6px); }
+
+    .inspection-container {
+        flex-direction: row;
+        gap: 8px;
+    }
+    .brake-pad-section, .warning-section { flex: 1; }
+    .brake-pad-title { font-size: 14px; }
+    .position-row { font-size: 12px; }
+
+    .tire-inspection-main {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 5px;
+    }
+    .tire-block-left, .tire-block-right {
+        flex: 1;
+        flex-basis: 30%;
+        min-width: 30%;
+        max-width: 30%;
+        margin: 0;
+    }
+    .car-tire-diagram-wrapper {
+        flex: 0 0 35%;
+        width: 35%;
+        min-width: 35%;
+        max-width: 35%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    .car-tire-diagram {
+        width: 100%;
+        height: 200px;
+        background-size: 100% 100%;
+        margin-left: 0;
+    }
+    .steering-wheel {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .right-vertical-text {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        font-size: 10px;
+        border-left: 1px solid #274888;
+        padding-left: 4px;
+        margin: 0;
+    }
+
+    .spare-tire-and-notes-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 8px;
+        font-size: 9px;
+    }
+    .spare-tire-block { flex-basis: 30%; }
+    .spare-tire-note { flex: 1; }
+
+    .price-input-group {
+        font-size: 12px;
+        gap: 5px;
+        margin-top: 10px;
+        padding-top: 8px;
+    }
+    .price-input-group input { font-size: 12px; }
+
+    .tire-status-bar {
+        margin-top: 8px;
+        padding-top: 6px;
+    }
+    .tire-status-textarea { min-height: 30px; font-size: 10px; }
+
+    .bottom-highlight { padding: 6px 10px; }
+    .bottom-highlight-text { font-size: 12px; }
+    .qr-code { width: 60px; height: 60px; }
+
+    .bottom-icons-row {
+        gap: 4px 6px;
+        margin-top: 8px;
+    }
+    .icon-item { font-size: 8px; max-width: 55px; }
+    .icon-item img { height: 35px; }
+
+    .signature-row {
+        font-size: 10px;
+        gap: 8px;
+    }
+    .signature-row > div { max-width: none; }
+}
+
+@media (max-width: 700px) {
+    body { padding: 8px; }
+    .container { width: 100%; padding: 8px 12px; }
+    .header-top { flex-direction: column; align-items: center; text-align: center; }
+    .header-left, .header-right { max-width: 100%; text-align: center; }
+    .header-right { margin-top: 8px; }
+    .form-fields { flex-direction: column; gap: 4px; }
+    .field-group { flex-basis: 100%; }
+    .inspection-container { flex-direction: column; gap: 8px; }
+    .tire-inspection-main { flex-direction: column; align-items: center; padding-right: 0; gap: 10px; }
+    .tire-block { flex-basis: auto; width: 100%; }
+    .tire-block-left, .tire-block-right { margin: 0 !important; }
+    .car-tire-diagram-wrapper { width: 180px; height: 260px; margin: 10px auto; }
+    .car-tire-diagram { height: 100%; }
+    .steering-wheel { top: 90px; width: 60px; height: 58px; border-width: 2.5px; }
+    .steering-wheel-inner { width: 40px; height: 40px; border-width: 2px; }
+    .right-vertical-text {
+        writing-mode: horizontal-tb; border-left: none; border-top: 2px solid #274888; padding-left: 0;
+        padding-top: 6px; margin-left: 0; margin-top: 10px; width: 100%; height: auto; text-align: center; position: static;
+    }
+    .spare-tire-and-notes-wrapper { flex-direction: column; gap: 8px; }
+    .spare-tire-block { width: 100%; }
+    .spare-tire-note { width: 100%; }
+    .bottom-highlight { flex-direction: column; text-align: center; gap: 8px; }
+    .bottom-icons-row { justify-content: center; }
+    .signature-row { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+    <div class="top-menu-buttons">
+        <button onclick="clearFormData()">Xóa form</button>
+        <button onclick="submitFormData()">Lưu & Gửi</button>
+        <button onclick="handlePrint()">In phiếu</button>
+        <button onclick="exportPDF()">Xuất PDF</button>
+        <button onclick="window.location.href='https://longvt89.github.io/phieukiemtra'">Trang chủ</button>
+    </div>
+
+    <div class="container" aria-label="Phiếu kiểm tra lốp xe Phi Long">
+        <div class="main-content">
+            <div class="header-top">
+                <div class="header-left" role="banner">
+                    <div class="logo-big" aria-label="Phi Long">PHI LONG</div>
+                    <div class="logo-subtitle" aria-label="Tyre plus and car service Auto.com">
+                        TYRE PLUS + CAR SERVICE
+                        <span>AUTO.COM</span>
+                    </div>
+                </div>
+                <div class="header-right" aria-label="Slogan Nâng Tầm Trải Nghiệm Lái An Toàn Trọn Hành Trình">
+                    Nâng Tầm Trải Nghiệm Lái<br />
+                    An Toàn Trọn Hành Trình
+                </div>
+            </div>
+
+            <div class="form-fields" role="form" aria-label="Thông tin xe khách hàng">
+                <div class="field-group">
+                    <span class="field-label-bold">Tên khách hàng:</span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="customer-name"></span>
+                </div>
+                <div class="field-group">
+                    <span class="field-label-bold">Số điện thoại:</span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="phone-number"></span>
+                </div>
+                <div class="field-group">
+                    <span class="field-label-bold">Km chạy:</span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="mileage"></span>
+                </div>
+                <div class="field-group">
+                    <span class="field-label-bold">Hiệu xe / Model:</span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="car-model"></span>
+                </div>
+                <div class="field-group">
+                    <span class="field-label-bold">Biển số:</span>
+                    <span class="field-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="license-plate"></span>
+                </div>
+                <div class="field-group">
+                    <span class="field-label-bold">Chi Nhánh:</span>
+                    <span class="field-line" id="branch-display">Đang tìm vị trí...</span>
+                    <select class="field-line" id="branch-select" style="display:none;">
+                        <option value="">Chọn chi nhánh</option>
+                        <option value="Chi Nhánh 1 - Bình Phước">Chi Nhánh 1 - Bình Phước</option>
+                        <option value="Chi Nhánh 2 - Đồng Xoài">Chi Nhánh 2 - Đồng Xoài</option>
+                        <option value="Chi Nhánh 3 - Bình Dương">Chi Nhánh 3 - Bình Dương</option>
+                    </select>
+                    <input type="hidden" id="branch-value" name="branch-value">
+                </div>
+            </div>
+
+            <div class="tread-legend" aria-label="Tiêu chuẩn độ sâu gai lốp">
+                <span><span class="color-box green-box" aria-hidden="true"></span><span class="legend-text"> > 4mm Đạt & Tốt</span></span>
+                <span><span class="yellow-triangle" aria-hidden="true"></span><span class="legend-text"> 3-4mm Cần chú ý trong tương lai</span></span>
+                <span><span class="red-circle" aria-hidden="true"></span><span class="legend-text"> 1.6-3mm Cần xử lý ngay</span></span>
+            </div>
+
+            <div class="section-title" role="heading" aria-level="1">
+                PHIẾU KIỂM TRA LỐP XE – TYRE INSPECTION FORM
+            </div>
+
+            <div class="inspection-container">
+                <section class="brake-pad-section" aria-labelledby="brake-pad-title" role="region" aria-describedby="brake-pad-desc">
+                    <div id="brake-pad-title" class="brake-pad-title" tabindex="0">
+                        Bố thắng (Brake Pad)
+                    </div>
+
+                    <div id="brake-pad-desc" class="position-label">
+                        Vị trí/ độ dày
+                    </div>
+
+                    <div class="position-row" aria-label="Độ dày má phanh trước">
+                        <label for="front-mm">Trước :</label>
+                        <span id="front-mm" class="input-line" contenteditable="true" aria-live="polite" aria-atomic="true" aria-label="Số milimet" oninput="updateBrakeStatus(this)"></span> <span>mm</span>
+                        <div class="gauges" role="radiogroup" aria-label="Đánh giá tình trạng má phanh trước" data-field="brake_front_status">
+                            <div class="status-box status-green" role="radio" aria-checked="false" aria-label="Tốt, đạt hơn 4 milimet" data-target="front-mm"></div>
+                            <div class="status-box status-yellow" role="radio" aria-checked="false" aria-label="3 đến 4 milimet, cần chú ý" data-target="front-mm"></div>
+                            <div class="status-box status-red" role="radio" aria-checked="false" aria-label="1.6 đến 3 milimet, cần xử lý ngay" data-target="front-mm"></div>
+                        </div>
+                    </div>
+
+                    <div class="position-row" aria-label="Độ dày má phanh sau">
+                        <label for="back-mm">Sau :</label>
+                        <span id="back-mm" class="input-line" contenteditable="true" aria-live="polite" aria-atomic="true" aria-label="Số milimet" oninput="updateBrakeStatus(this)"></span> <span>mm</span>
+                        <div class="gauges" role="radiogroup" aria-label="Đánh giá tình trạng má phanh sau" data-field="brake_back_status">
+                            <div class="status-box status-green" role="radio" aria-checked="false" aria-label="Tốt, đạt hơn 4 milimet" data-target="back-mm"></div>
+                            <div class="status-box status-yellow" role="radio" aria-checked="false" aria-label="3 đến 4 milimet, cần chú ý" data-target="back-mm"></div>
+                            <div class="status-box status-red" role="radio" aria-checked="false" aria-label="1.6 đến 3 milimet, cần xử lý ngay" data-target="back-mm"></div>
+                        </div>
+                    </div>
+
+                    <div class="note-row" aria-label="Khuyến cáo hoặc ghi chú">
+                        Khuyến cáo / Ghi chú:
+                        <span class="input-line" contenteditable="true" aria-live="polite" aria-atomic="true" id="brake-note"></span>
+                    </div>
+                </section>
+
+                <aside class="warning-section" role="complementary" aria-labelledby="warning-title">
+                    <div id="warning-title" class="warning-title" tabindex="0">Khuyến Cáo</div>
+                    <div class="checkbox-group" role="group" aria-label="Các khuyến cáo lốp xe">
+                        <label class="checkbox-label"><input type="checkbox" aria-label="Cân chỉnh thước lái Alignment" name="recommendation" value="Cân chỉnh thước lái" /> Cân chỉnh thước lái (Alignment)</label>
+                        <label class="checkbox-label"><input type="checkbox" aria-label="Cân bằng động Balance" name="recommendation" value="Cân bằng động" /> Cân bằng động (Balance)</label>
+                        <label class="checkbox-label"><input type="checkbox" aria-label="Đảo lốp Rotation" name="recommendation" value="Đảo lốp" /> Đảo lốp (Rotation)</label>
+                        <label class="checkbox-label"><input type="checkbox" aria-label="Thay lốp mới New Tire" name="recommendation" value="Thay lốp mới" /> Thay lốp mới (New Tire)</label>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="tire-inspection-main" aria-label="Thông tin kích thước và DOT lốp">
+                <div class="tire-block-left" role="group" aria-labelledby="tire-left-size-label">
+                    <div class="tire-block-inner">
+                        <div class="tire-size-header">
+                            <div class="tire-size-left">SIZE</div>
+                            <div id="tire-left-size-label" style="text-align:right; font-weight: 700; font-size: 10px; user-select:none;">mm<br />kg/cm</div>
+                        </div>
+                        <div class="tire-input-group">
+                            <div class="tire-input-item">
+                                <label>Size lốp:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Size lốp" name="tire_size_1">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Độ dày:</label>
+                                <input type="text" class="tire-data-input tire_depth_input" aria-label="Nhập Độ dày" name="tire_depth_1" oninput="updateRecommendations()">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Áp suất:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Áp suất" name="tire_pressure_1">
+                            </div>
+							<div class="tire-input-item" ><label>Hãng lốp:</label><input type="text" class="tire-data-input" name="tire_brand_1"></div>
+                        </div>
+                        <div class="dot-input-group">
+                            <label>DOT:</label>
+                            <input type="text" class="dot-data-input" aria-label="Nhập thông tin DOT" name="tire_dot_1" oninput="checkTireDOT()">
+                        </div>
+						
+                        <div class="tire-size-header" style="margin-top: 6px;">
+                            <div class="tire-size-left">SIZE</div>
+                            <div style="text-align:right; font-weight: 700; font-size: 10px; user-select:none;">mm<br />kg/cm</div>
+                        </div>
+                        <div class="tire-input-group">
+                            <div class="tire-input-item">
+                                <label>Size lốp:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Size lốp" name="tire_size_2">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Độ dày:</label>
+                                <input type="text" class="tire-data-input tire_depth_input" aria-label="Nhập Độ dày" name="tire_depth_2" oninput="updateRecommendations()">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Áp suất:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Áp suất" name="tire_pressure_2">
+                            </div>
+							<div class="tire-input-item" ><label>Hãng lốp:</label><input type="text" class="tire-data-input" name="tire_brand_2"></div>
+                        </div>
+                        <div class="dot-input-group">
+                            <label>DOT:</label>
+                            <input type="text" class="dot-data-input" aria-label="Nhập thông tin DOT" name="tire_dot_2" oninput="checkTireDOT()">
+                        </div>
+						
+                    </div>
+                </div>
+
+                <div class="car-tire-diagram-wrapper" aria-hidden="true">
+                    <div class="car-tire-diagram" aria-label="Sơ đồ vị trí các lốp xe nhìn từ trên xuống">
+                        <div class="tire-position tire-top-left" title="Lốp trước bên trái"></div>
+                        <div class="tire-position tire-top-right" title="Lốp trước bên phải"></div>
+                        <div class="tire-position tire-bottom-left" title="Lốp sau bên trái"></div>
+                        <div class="tire-position tire-bottom-right" title="Lốp sau bên phải"></div>
+                        <div class="steering-wheel" aria-hidden="true" title="Bánh lái">
+                            <div class="steering-wheel-inner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tire-block-right" role="group" aria-labelledby="tire-right-size-label">
+                    <div class="tire-block-inner">
+                        <div class="tire-size-header">
+                            <div class="tire-size-left">SIZE</div>
+                            <div id="tire-right-size-label" style="text-align:right; font-weight: 700; font-size: 10px; user-select:none;">mm<br />kg/cm</div>
+                        </div>
+                        <div class="tire-input-group">
+                            <div class="tire-input-item">
+                                <label>Size lốp:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Size lốp" name="tire_size_3">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Độ dày:</label>
+                                <input type="text" class="tire-data-input tire_depth_input" aria-label="Nhập Độ dày" name="tire_depth_3" oninput="updateRecommendations()">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Áp suất:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Áp suất" name="tire_pressure_3">
+                            </div>
+							<div class="tire-input-item" ><label>Hãng lốp:</label><input type="text" class="tire-data-input" name="tire_brand_3"></div>
+                        </div>
+                        <div class="dot-input-group">
+                            <label>DOT:</label>
+                            <input type="text" class="dot-data-input" aria-label="Nhập thông tin DOT" name="tire_dot_3" oninput="checkTireDOT()">
+                        </div>
+						
+                        <div class="tire-size-header" style="margin-top: 6px;">
+                            <div class="tire-size-left">SIZE</div>
+                            <div style="text-align:right; font-weight: 700; font-size: 10px; user-select:none;">mm<br />kg/cm</div>
+                        </div>
+                        <div class="tire-input-group">
+                            <div class="tire-input-item">
+                                <label>Size lốp:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Size lốp" name="tire_size_4">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Độ dày:</label>
+                                <input type="text" class="tire-data-input tire_depth_input" aria-label="Nhập Độ dày" name="tire_depth_4" oninput="updateRecommendations()">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Áp suất:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Áp suất" name="tire_pressure_4">
+                            </div>
+							<div class="tire-input-item" ><label>Hãng lốp:</label><input type="text" class="tire-data-input" name="tire_brand_4"></div>
+                        </div>
+                        <div class="dot-input-group">
+                            <label>DOT:</label>
+                            <input type="text" class="dot-data-input" aria-label="Nhập thông tin DOT" name="tire_dot_4" oninput="checkTireDOT()">
+                        </div>
+						
+                    </div>
+                </div>
+
+                <div class="right-vertical-text" aria-hidden="true" title="Áp suất khuyến cáo">
+                    Áp Suất Khuyến cáo
+                </div>
+            </div>
+
+            <div class="spare-tire-and-notes-wrapper" aria-label="Thông tin bánh xe dự phòng và các lưu ý">
+                <div class="spare-tire-note spare-tire-note-left" aria-label="Lưu ý về gai mòn">
+                    <em><strong>Lưu ý:</strong> nếu gai mòn tới bằng vạch TWI hoặc dưới 1.6 mm, cần thay ngay đảm bảo an toàn.</em>
+                </div>
+
+                <div class="spare-tire-block" role="group" aria-labelledby="spare-tire-size-label">
+                    <div class="tire-block-inner">
+                        <div class="tire-size-header">
+                            <div class="tire-size-left">SIZE</div>
+                            <div id="spare-tire-size-label" style="text-align:right; font-weight: 700; font-size: 10px; user-select:none;">mm<br />kg/cm</div>
+                        </div>
+                        <div class="tire-input-group">
+                            <div class="tire-input-item">
+                                <label>Size lốp:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Size lốp dự phòng" name="spare_tire_size">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Độ dày:</label>
+                                <input type="text" class="tire-data-input tire_depth_input" aria-label="Nhập Độ dày lốp dự phòng" name="spare_tire_depth" oninput="updateRecommendations()">
+                            </div>
+                            <div class="tire-input-item">
+                                <label>Áp suất:</label>
+                                <input type="text" class="tire-data-input" aria-label="Nhập Áp suất lốp dự phòng" name="spare_tire_pressure">
+                            </div>
+							<div class="tire-input-item" ><label>Hãng lốp:</label><input type="text" class="tire-data-input" name="spare_tire_brand"></div>
+                        </div>
+                        <div class="dot-input-group">
+                            <label>DOT:</label>
+                            <input type="text" class="dot-data-input" aria-label="Nhập thông tin DOT lốp dự phòng" name="spare_tire_dot" oninput="checkTireDOT()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spare-tire-note spare-tire-note-right" aria-label="Lưu ý về hệ thống lái và hệ thống treo">
+                    <div>*Hệ Thống Lái: Rotuyn lái, độ rơ vô lăng, bạc đạn bánh xe.</div>
+                    <div>**Hệ Thống Treo: Cao su, rotuyn càng A, giảm sóc lò xo.</div>
+                </div>
+            </div>
+
+            <div class="car-note" aria-label="Lưu ý kiểm tra và bơm lốp dự phòng">
+                Lưu ý: Kiểm tra và bơm lốp dự phòng
+            </div>
+
+            <div class="price-input-group">
+                <label for="price-input">Giá tham khảo:</label>
+                <input type="text" id="price-input" placeholder="Nhập số tiền" aria-label="Giá tham khảo" />
+            </div>
+
+            <div class="tire-status-bar" aria-label="Hiện trạng lốp và ghi chú kiểm tra">
+                <div class="tire-status-icon" aria-hidden="true" title="Icon trạng thái hiện trạng lốp"></div>
+                <textarea class="tire-status-textarea" placeholder="Hiện trạng lốp:" aria-label="Nhập hiện trạng lốp" id="tire-status-note"></textarea>
+            </div>
+
+            <div class="bottom-highlight">
+                <div class="bottom-highlight-text">Nhận phiếu kiểm tra online<br />Đặt lịch bảo dưỡng</div>
+                <div class="qr-code" role="img" aria-label="Mã QR để nhận phiếu kiểm tra online và đặt lịch bảo dưỡng"></div>
+            </div>
+        </div>
+
+        <div class="bottom-icons-row" aria-label="Các loại hỗ trợ và phụ kiện">
+            <div class="icon-item" aria-label="Hệ thống">
+                <img src="hethong.png" alt="Hình minh họa hệ thống gồm các bộ phận xe chuyên dụng" />
+                HỆ THỐNG
+            </div>
+            <div class="icon-item" aria-label="Nâng cấp ánh sáng">
+                <img src="anhsang.png" alt="Hình minh họa đèn pha xe ô tô cao cấp" />
+                NÂNG CẤP ÁNH SÁNG
+            </div>
+            <div class="icon-item" aria-label="Phụ kiện dã ngoại">
+                <img src="phukien.png" alt="Hình minh họa phụ kiện đi dã ngoại" />
+                PHỤ KIỆN DÃ NGOẠI
+            </div>
+            <div class="icon-item" aria-label="Nâng cấp mâm và lốp">
+                <img src="lopxe.png" alt="Hình minh họa vành bánh xe thể thao" />
+                NÂNG CẤP MÂM & LỐP
+            </div>
+            <div class="icon-item" aria-label="Phụ kiện hiệu suất">
+                <img src="hieuxuat.png" alt="Hình minh họa phụ kiện nâng cao hiệu suất xe" />
+                PHỤ KIỆN HIỆU SUẤT
+            </div>
+            <div class="icon-item" aria-label="Phụ kiện bảo vệ xe">
+                <img src="baove.png" alt="Hình minh họa phụ kiện bảo vệ xe" />
+                PHỤ KIỆN BẢO VỆ XE
+            </div>
+            <div class="icon-item" aria-label="Phụ kiện cứu hộ">
+                <img src="cuuho.png" alt="Hình minh họa phụ kiện cứu hộ" />
+                PHỤ KIỆN CỨU HỘ
+            </div>
+            <div class="icon-item" aria-label="Đồ chơi nội thất">
+                <img src="noithat.png" alt="Hình minh họa đồ chơi nội thất xe" />
+                ĐỒ CHƠI NỘI THẤT
+            </div>
+            <div class="icon-item" aria-label="Đồ chơi ngoại thất">
+                <img src="ngoaithat.png" alt="Hình minh họa đồ chơi ngoại thất xe" />
+                ĐỒ CHƠI NGOẠI THẤT
+            </div>
+        </div>
+
+        <div class="signature-row" aria-label="Thông tin viên kiểm tra, ngày kiểm tra, mã CVDV">
+            <div>
+                <span class="signature-label">Viên kiểm tra:</span> <span class="signature-item" contenteditable="true" aria-live="polite" aria-atomic="true" id="inspector"></span>
+            </div>
+            <div>
+                <span class="signature-label">Ngày kiểm tra:</span> <span class="signature-item" contenteditable="true" aria-live="polite" aria-atomic="true" id="inspection-date"></span>
+            </div>
+            <div>
+                <span class="signature-label">CVDV:</span> <span class="signature-item" contenteditable="true" aria-live="polite" aria-atomic="true" id="service-advisor"></span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+    const branchSelect = document.getElementById('branch-select');
+    const branchDisplay = document.getElementById('branch-display');
+    const branchValueInput = document.getElementById('branch-value');
+    
+    // Thêm một khối HTML mới để chứa cảnh báo DOT
+    document.addEventListener('DOMContentLoaded', () => {
+        const carNoteBlock = document.querySelector('.car-note');
+        if (carNoteBlock) {
+            const newWarningDiv = document.createElement('div');
+            newWarningDiv.id = 'dot-warning-message';
+            newWarningDiv.classList.add('dot-warning-message');
+            newWarningDiv.style.display = 'none'; // Ẩn ban đầu
+            newWarningDiv.style.marginTop = '8px';
+            newWarningDiv.style.padding = '5px';
+            newWarningDiv.style.backgroundColor = '#fff3cd';
+            newWarningDiv.style.border = '1px solid #ffecb5';
+            newWarningDiv.style.borderRadius = '4px';
+            newWarningDiv.style.color = '#856404';
+            newWarningDiv.style.fontSize = '12px';
+            newWarningDiv.style.fontFamily = 'Arial, sans-serif';
+            newWarningDiv.style.lineHeight = '1.4';
+            newWarningDiv.style.fontWeight = 'bold';
+            carNoteBlock.parentNode.insertBefore(newWarningDiv, carNoteBlock.nextSibling);
+        }
+    });
+
+    branchSelect.addEventListener('change', (event) => {
+        branchValueInput.value = event.target.value;
+    });
+
+    // ***** THAY ĐỔI 2: CẬP NHẬT DANH SÁCH PHẦN TỬ FORM *****
+    const formElements = document.querySelectorAll(
+        '#customer-name, #phone-number, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor, input[type="checkbox"][name="recommendation"], .position-row .input-line, #branch-select'
+    );
+    const storageKey = 'tireInspectionForm';
+
+    function saveFormData() {
+        const data = {};
+        formElements.forEach(element => {
+            if (element.type === 'checkbox') {
+                data[element.name + '_' + element.value] = element.checked;
+            } else if (element.tagName === 'SELECT') {
+                data[element.id] = element.value;
+            } else if (element.hasAttribute('contenteditable')) {
+                data[element.id] = element.innerText;
+            } else {
+                data[element.name || element.id] = element.value;
+            }
+        });
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        console.log('Dữ liệu đã được lưu tự động.');
+    }
+
+    function loadFormData() {
+        const savedData = JSON.parse(localStorage.getItem(storageKey));
+        if (savedData) {
+            formElements.forEach(element => {
+                if (element.type === 'checkbox') {
+                    const key = element.name + '_' + element.value;
+                    if (savedData[key]) {
+                        element.checked = savedData[key];
+                    }
+                } else if (element.tagName === 'SELECT') {
+                    if (savedData[element.id]) {
+                        element.value = savedData[element.id];
+                    }
+                } else if (element.hasAttribute('contenteditable')) {
+                    if (savedData[element.id] !== undefined) {
+                        element.innerText = savedData[element.id];
+                    }
+                } else {
+                    if (savedData[element.name || element.id] !== undefined) {
+                        element.value = savedData[element.name || element.id];
+                    }
+                }
+            });
+
+            // Khôi phục trạng thái má phanh
+            ['front-mm', 'back-mm'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    updateBrakeStatus(element);
+                }
+            });
+            
+            // Khôi phục giá trị của select chi nhánh
+            if (savedData['branch-value']) {
+                if (branchSelect.querySelector(`option[value="${savedData['branch-value']}"]`)) {
+                    branchSelect.value = savedData['branch-value'];
+                    branchDisplay.innerText = savedData['branch-value'];
+                    branchDisplay.style.display = 'block';
+                    branchSelect.style.display = 'none';
+                } else {
+                    branchDisplay.innerText = 'Không tìm thấy chi nhánh';
+                    branchDisplay.style.display = 'block';
+                    branchSelect.style.display = 'none';
+                }
+            } else {
+                branchDisplay.innerText = 'Đang tìm vị trí...';
+                branchDisplay.style.display = 'block';
+                branchSelect.style.display = 'none';
+            }
+
+            // Cập nhật các khuyến cáo sau khi load dữ liệu
+            updateRecommendations();
+            // Kiểm tra lại DOT sau khi load dữ liệu
+            checkAllTireDOTs();
+
+            console.log('Dữ liệu đã được khôi phục.');
+        }
+    }
+
+    setInterval(saveFormData, 2000);
+    window.addEventListener('load', loadFormData);
+
+    document.querySelectorAll('[contenteditable="true"]').forEach(element => {
+        element.addEventListener('input', saveFormData);
+    });
+    document.querySelectorAll('input, select, textarea').forEach(element => {
+        element.addEventListener('input', saveFormData);
+        element.addEventListener('change', saveFormData);
+    });
+
+    function clearFormData() {
+        if (confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu form? Thao tác này không thể hoàn tác.')) {
+            formElements.forEach(element => {
+                if (element.type === 'checkbox') {
+                    element.checked = false;
+                } else if (element.tagName === 'SELECT') {
+                    element.value = '';
+                } else if (element.hasAttribute('contenteditable')) {
+                    element.innerText = '';
+                } else {
+                    element.value = '';
+                }
+            });
+            
+            document.querySelectorAll('.gauges .status-box').forEach(box => {
+                box.classList.remove('active');
+                box.setAttribute('aria-checked', 'false');
+            });
+
+            // Ẩn và xóa nội dung cảnh báo DOT
+            const dotWarningMessage = document.getElementById('dot-warning-message');
+            if (dotWarningMessage) {
+                dotWarningMessage.innerHTML = '';
+                dotWarningMessage.style.display = 'none';
+            }
+            
+            const tireStatusNote = document.getElementById('tire-status-note');
+            if (tireStatusNote) {
+                tireStatusNote.value = '';
+            }
+
+            localStorage.removeItem(storageKey);
+            console.log('Dữ liệu form và localStorage đã được xóa.');
+
+            window.location.reload();
+        }
+    }
+
+    // --- HÀM MỚI ĐỂ XỬ LÝ LỆNH IN VỚI KHỔ GIẤY A5 ---
+    function handlePrint() {
+        // Tạo một thẻ style mới để ghi đè kích thước trang A5
+        const printStyle = document.createElement('style');
+        printStyle.id = 'a5-print-style';
+        printStyle.textContent = '@page { size: A5; margin: 5mm; }';
+        document.head.appendChild(printStyle);
+        
+        // Gọi lệnh in
+        window.print();
+        
+        // Sau khi in (hoặc hộp thoại in bị đóng), xóa thẻ style để không ảnh hưởng đến hiển thị
+        // Sử dụng setTimeout để đảm bảo lệnh xóa được chạy sau khi in hoàn tất
+        setTimeout(() => {
+            const styleElement = document.getElementById('a5-print-style');
+            if (styleElement) {
+                styleElement.remove();
+            }
+        }, 100);
+    }
+    // --- KẾT THÚC HÀM MỚI ---
+    
+    // ***** THAY ĐỔI 3: CẬP NHẬT DANH SÁCH PHẦN TỬ ĐỂ DI CHUYỂN BẰNG PHÍM ENTER *****
+    const focusedElements = document.querySelectorAll(
+        '#customer-name, #phone-number, #mileage, #car-model, #license-plate, input[name^="tire_size"], input[name^="tire_depth"], input[name^="tire_pressure"], input[name^="tire_dot"], input[name^="spare_tire"], #price-input, #tire-status-note, #inspector, #inspection-date, #service-advisor'
+    );
+
+    function setupEnterKeyListener() {
+        focusedElements.forEach(element => {
+            element.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const currentIndex = Array.from(focusedElements).indexOf(element);
+                    const nextIndex = (currentIndex + 1) % focusedElements.length;
+                    const nextElement = focusedElements[nextIndex];
+
+                    if (nextElement) {
+                        nextElement.focus();
+                        if (nextElement.hasAttribute('contenteditable')) {
+                            const range = document.createRange();
+                            const sel = window.getSelection();
+                            range.selectNodeContents(nextElement);
+                            range.collapse(false);
+                            sel.removeAllRanges();
+                            sel.addRange(range);
+                        }
+                    }
+                }
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', setupEnterKeyListener);
+
+    function submitFormData() {
+        const googleAppsScriptURL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
+
+        // ***** THAY ĐỔI 4: THÊM `dienthoai` VÀO DỮ LIỆU GỬI ĐI *****
+        const formData = {
+            formType: 'PhieuDanhGiaLopMoi',
+
+            customerName: document.getElementById('customer-name').innerText,
+            dienthoai: document.getElementById('phone-number').innerText, // Dữ liệu từ trường mới
+            mileage: document.getElementById('mileage').innerText,
+            carModel: document.getElementById('car-model').innerText,
+            licensePlate: document.getElementById('license-plate').innerText,
+            branch: branchValueInput.value,
+
+            brakeFrontDepth: document.getElementById('front-mm').innerText,
+            brakeBackDepth: document.getElementById('back-mm').innerText,
+            brakeNote: document.getElementById('brake-note').innerText,
+
+            price: document.getElementById('price-input').value,
+
+            rec_canchinhthuoclai: document.querySelector('input[value="Cân chỉnh thước lái"]').checked ? 'X' : '',
+            rec_canbangdong: document.querySelector('input[value="Cân bằng động"]').checked ? 'X' : '',
+            rec_daolop: document.querySelector('input[value="Đảo lốp"]').checked ? 'X' : '',
+            rec_thaythe: document.querySelector('input[value="Thay lốp mới"]').checked ? 'X' : '',
+
+            tire_size_1: document.querySelector('input[name="tire_size_1"]').value,
+            tire_depth_1: document.querySelector('input[name="tire_depth_1"]').value,
+            tire_pressure_1: document.querySelector('input[name="tire_pressure_1"]').value,
+			tire_brand_1: document.querySelector('input[name="tire_brand_1"]').value,
+            tire_dot_1: document.querySelector('input[name="tire_dot_1"]').value,
+
+            tire_size_2: document.querySelector('input[name="tire_size_2"]').value,
+            tire_depth_2: document.querySelector('input[name="tire_depth_2"]').value,
+            tire_pressure_2: document.querySelector('input[name="tire_pressure_2"]').value,
+			tire_brand_2: document.querySelector('input[name="tire_brand_2"]').value,
+            tire_dot_2: document.querySelector('input[name="tire_dot_2"]').value,
+
+            tire_size_3: document.querySelector('input[name="tire_size_3"]').value,
+            tire_depth_3: document.querySelector('input[name="tire_depth_3"]').value,
+            tire_pressure_3: document.querySelector('input[name="tire_pressure_3"]').value,
+			tire_brand_3: document.querySelector('input[name="tire_brand_3"]').value,
+            tire_dot_3: document.querySelector('input[name="tire_dot_3"]').value,
+
+            tire_size_4: document.querySelector('input[name="tire_size_4"]').value,
+            tire_depth_4: document.querySelector('input[name="tire_depth_4"]').value,
+            tire_pressure_4: document.querySelector('input[name="tire_pressure_4"]').value,
+			tire_brand_4: document.querySelector('input[name="tire_brand_4"]').value,
+            tire_dot_4: document.querySelector('input[name="tire_dot_4"]').value,
+
+            spare_tire_size: document.querySelector('input[name="spare_tire_size"]').value,
+            spare_tire_depth: document.querySelector('input[name="spare_tire_depth"]').value,
+            spare_tire_pressure: document.querySelector('input[name="spare_tire_pressure"]').value,
+			spare_tire_brand: document.querySelector('input[name="spare_tire_brand"]').value,
+            spare_tire_dot: document.querySelector('input[name="spare_tire_dot"]').value,
+
+            tireStatusNote: document.getElementById('tire-status-note').value,
+            inspector: document.getElementById('inspector').innerText,
+            inspectionDate: document.getElementById('inspection-date').innerText,
+            serviceAdvisor: document.getElementById('service-advisor').innerText,
+        };
+
+        if (!formData.customerName || !formData.carModel || !formData.licensePlate || !formData.branch) {
+            alert('Vui lòng điền đầy đủ các thông tin: Tên khách hàng, Hiệu xe, Biển số và Chi nhánh.');
+            return;
+        }
+
+        fetch(googleAppsScriptURL, {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                // Sửa Content-Type để tránh Preflight Request của trình duyệt
+                'Content-Type': 'text/plain;charset=utf-8',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) { 
+                return response.json().then(err => { throw new Error(err.message || 'Lỗi không xác định từ server'); });
+            }
+            return response.text();
+        })
+        .then(result => {
+             console.log('Success:', result);
+             alert('Dữ liệu đã được gửi thành công!');
+        })
+        .catch((error) => {
+            alert('Có lỗi xảy ra khi gửi dữ liệu: ' + error.toString());
+            console.error('Error:', error);
+        });
+    }
+
+    function updateBrakeStatus(element) {
+        const parentRow = element.closest('.position-row');
+        const gauges = parentRow.querySelector('.gauges');
+        const value = parseFloat(element.innerText.trim().replace(',', '.'));
+
+        gauges.querySelectorAll('.status-box').forEach(box => {
+            box.classList.remove('active');
+            box.setAttribute('aria-checked', 'false');
+        });
+        
+        if (!isNaN(value) && element.innerText.trim() !== '') {
+            if (value > 4) {
+                const box = gauges.querySelector('.status-green');
+                if (box) {
+                    box.classList.add('active');
+                    box.setAttribute('aria-checked', 'true');
+                }
+            } else if (value >= 3 && value <= 4) {
+                const box = gauges.querySelector('.status-yellow');
+                if (box) {
+                    box.classList.add('active');
+                    box.setAttribute('aria-checked', 'true');
+                }
+            } else if (value >= 1.6 && value < 3) {
+                const box = gauges.querySelector('.status-red');
+                if (box) {
+                    box.classList.add('active');
+                    box.setAttribute('aria-checked', 'true');
+                }
+            }
+        }
+        saveFormData();
+    }
+    
+    function updateRecommendations() {
+        const depthInputs = document.querySelectorAll('.tire_depth_input');
+        const rotationCheckbox = document.querySelector('input[value="Đảo lốp"]');
+        const balanceCheckbox = document.querySelector('input[value="Cân bằng động"]');
+        const newTireCheckbox = document.querySelector('input[value="Thay lốp mới"]');
+        let needsRotation = false;
+        let needsNewTire = false;
+        let needsBalance = false;
+
+        depthInputs.forEach(input => {
+            const depth = parseFloat(input.value);
+            if (!isNaN(depth)) {
+                if (depth >= 3 && depth <= 4) {
+                    needsRotation = true;
+                    needsBalance = true;
+                }
+                if (depth < 3) {
+                    needsNewTire = true;
+                    needsRotation = true;
+                }
+            }
+        });
+
+        if (newTireCheckbox) {
+            newTireCheckbox.checked = needsNewTire;
+        }
+        if (rotationCheckbox) {
+            rotationCheckbox.checked = needsRotation;
+        }
+        if (balanceCheckbox) {
+            balanceCheckbox.checked = needsBalance;
+        }
+
+        saveFormData();
+    }
+
+    const tirePositions = {
+        'tire_dot_1': 'trước trái',
+        'tire_dot_2': 'trước phải',
+        'tire_dot_3': 'sau trái',
+        'tire_dot_4': 'sau phải',
+        'spare_tire_dot': 'dự phòng'
+    };
+
+    function checkAllTireDOTs() {
+        const dotWarningMessage = document.getElementById('dot-warning-message');
+        if (!dotWarningMessage) return;
+
+        const dotInputs = document.querySelectorAll('.dot-data-input');
+        const currentFullYear = new Date().getFullYear();
+        
+        let oldTires = [];
+        let expiredTires = [];
+        let hasData = false;
+
+        dotInputs.forEach(input => {
+            const dot = input.value.trim();
+            if (dot) {
+                hasData = true;
+            }
+            if (dot.length === 4) {
+                const year = parseInt(dot.substring(2, 4), 10);
+                const fullYear = year > (currentFullYear % 100) ? 1900 + year : 2000 + year;
+                const age = currentFullYear - fullYear;
+                const position = tirePositions[input.name];
+
+                if (age > 10) {
+                    oldTires.push(`${position} (DOT ${dot})`);
+                } else if (age > 5) {
+                    expiredTires.push(`${position} (DOT ${dot})`);
+                }
+            }
+        });
+
+        if (hasData) {
+            let warningsHtml = '';
+            if (oldTires.length > 0) {
+                warningsHtml += `<div>⚠️ **Lốp quá cũ** (> 10 năm): ${oldTires.join('; ')}</div>`;
+            }
+            if (expiredTires.length > 0) {
+                warningsHtml += `<div>❗ **Lốp quá hạn** (> 5 năm): ${expiredTires.join('; ')}</div>`;
+            }
+
+            if (warningsHtml) {
+                dotWarningMessage.innerHTML = warningsHtml;
+                dotWarningMessage.style.display = 'block';
+            } else {
+                dotWarningMessage.innerHTML = '';
+                dotWarningMessage.style.display = 'none';
+            }
+        } else {
+            dotWarningMessage.innerHTML = '';
+            dotWarningMessage.style.display = 'none';
+        }
+
+        saveFormData();
+    }
+    
+    document.querySelectorAll('.tire_depth_input').forEach(input => {
+        input.addEventListener('input', updateRecommendations);
+    });
+    document.querySelectorAll('.dot-data-input').forEach(input => {
+        input.addEventListener('input', checkAllTireDOTs);
+    });
+    
+    // Thêm sự kiện blur để kiểm tra khi người dùng rời khỏi trường input
+    document.querySelectorAll('.dot-data-input').forEach(input => {
+        input.addEventListener('blur', checkAllTireDOTs);
+    });
+
+    const branchLocations = [
+        { name: 'Chi Nhánh 1 - Bình Phước', lat: 11.5145974, lon: 106.8931262 },
+        { name: 'Chi Nhánh 2 - Đồng Xoài', lat: 11.537788, lon: 106.905191 },
+        { name: 'Chi Nhánh 3 - Bình Dương', lat: 11.004401, lon: 106.6719367 }
+    ];
+
+    const distanceThresholdKm = 2;
+
+    function haversineDistance(lat1, lon1, lat2, lon2) {
+        const toRad = (value) => (value * Math.PI) / 180;
+        const R = 6371;
+        const dLat = toRad(lat2 - lat1);
+        const dLon = toRad(lon2 - lon1);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    function getBranchFromLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    let closestBranch = null;
+                    let minDistance = Infinity;
+
+                    for (const branch of branchLocations) {
+                        const distance = haversineDistance(userLat, userLon, branch.lat, branch.lon);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestBranch = branch;
+                        }
+                    }
+
+                    if (closestBranch && minDistance <= distanceThresholdKm) {
+                        branchDisplay.innerText = closestBranch.name;
+                        branchValueInput.value = closestBranch.name;
+                        branchDisplay.style.display = 'block';
+                        branchSelect.style.display = 'none';
+                        branchSelect.value = closestBranch.name;
+                        console.log(`Đã tìm thấy chi nhánh gần nhất: ${closestBranch.name} (Khoảng cách: ${minDistance.toFixed(2)} km)`);
+                    } else {
+                        console.log('Không tìm thấy chi nhánh nào gần đây. Vui lòng chọn thủ công.');
+                        branchDisplay.style.display = 'none';
+                        branchSelect.style.display = 'block';
+                        branchValueInput.value = '';
+                    }
+                    saveFormData();
+                },
+                (error) => {
+                    console.error('Lỗi định vị:', error);
+                    branchDisplay.style.display = 'none';
+                    branchSelect.style.display = 'block';
+                    branchValueInput.value = '';
+                    saveFormData();
+                },
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            );
+        } else {
+            console.error('Trình duyệt không hỗ trợ Geolocation API.');
+            branchDisplay.style.display = 'none';
+            branchSelect.style.display = 'block';
+            branchValueInput.value = '';
+            saveFormData();
+        }
+    }
+
+    window.addEventListener('load', () => {
+        loadFormData();
+        getBranchFromLocation();
+        // Khởi chạy hàm kiểm tra khuyến cáo và DOT khi tải trang để áp dụng cho dữ liệu đã lưu
+        updateRecommendations();
+        checkAllTireDOTs();
+    });
+
+
+    function formatPriceInput(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value === '') return;
+
+        let formattedValue = new Intl.NumberFormat('vi-VN').format(value);
+        input.value = formattedValue;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const priceInput = document.getElementById('price-input');
+        if (priceInput) {
+            priceInput.addEventListener('input', function(event) {
+                let cursorPosition = this.selectionStart;
+                let oldLength = this.value.length;
+
+                let value = this.value.replace(/\D/g, '');
+                let formattedValue = new Intl.NumberFormat('vi-VN').format(value);
+
+                this.value = formattedValue;
+
+                let newLength = this.value.length;
+                cursorPosition += (newLength - oldLength);
+                this.setSelectionRange(cursorPosition, cursorPosition);
+            });
+            priceInput.addEventListener('blur', function() {
+                if (this.value !== '') {
+                    this.value += ' VND';
+                }
+            });
+            priceInput.addEventListener('focus', function() {
+                this.value = this.value.replace(' VND', '');
+            });
+        }
+    });
+    // Cập nhật lại event listener cho nút "In phiếu"
+    const printButton = document.querySelector('button[onclick="window.print()"]');
+    if (printButton) {
+        printButton.setAttribute('onclick', 'handlePrint()');
+    }
+
+    // --- HÀM XUẤT PDF MỚI ---
+    async function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const container = document.querySelector('.container');
+
+        // Tạm thời ẩn các nút để không bị chụp vào file PDF
+        const menuButtons = document.querySelector('.top-menu-buttons');
+        const originalDisplay = menuButtons.style.display;
+        menuButtons.style.display = 'none';
+        
+        try {
+            const canvas = await html2canvas(container, {
+                scale: 2, // Tăng scale để hình ảnh rõ nét hơn
+                useCORS: true // Quan trọng: cho phép tải các hình ảnh từ nguồn khác
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 210; // Chiều rộng khổ A4
+            const pageHeight = 297; // Chiều cao khổ A4
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            
+            // Khôi phục lại trạng thái ban đầu của các nút
+            menuButtons.style.display = originalDisplay;
+
+            doc.save('Phieu-Kiem-Tra-Lop-Xe.pdf');
+            
+        } catch (error) {
+            console.error("Lỗi khi tạo PDF:", error);
+            alert("Có lỗi xảy ra khi tạo file PDF. Vui lòng thử lại.");
+            // Đảm bảo khôi phục lại trạng thái ban đầu ngay cả khi có lỗi
+            menuButtons.style.display = originalDisplay;
+        }
+    }
+    // --- KẾT THÚC HÀM XUẤT PDF MỚI ---
+</script>
+    
+</body>
+</html>

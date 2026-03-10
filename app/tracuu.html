@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Thông Tin Xe</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .container { background-color: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); width: 100%; max-width: 1200px; margin: 20px; }
+        .search-button { background-color: #4f46e5; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease-in-out; width: 100%; }
+        .search-button:hover { background-color: #4338ca; }
+        .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* === NÚT QUAY VỀ MỚI === */
+        .back-button {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 10px 16px;
+            background-color: #6b7280; /* Màu xám */
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .back-button:hover {
+            background-color: #4b5563; /* Xám đậm hơn khi di chuột */
+        }
+
+        .result-header { text-align: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #e5e7eb; }
+        .result-header h2 { font-size: 1.75rem; font-weight: 700; color: #1f2937; }
+        .result-header p { font-size: 1rem; color: #6b7280; margin-top: 4px; }
+        
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px; }
+        .result-group { background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; }
+        .result-group h3 { font-size: 1.2rem; font-weight: 600; color: #374151; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid #6366f1; }
+        
+        .result-item { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding: 8px 0; border-bottom: 1px dashed #e5e7eb; }
+        .result-group .result-item:last-child, .long-notes-section .result-item:last-child { border-bottom: none; }
+        .result-item strong { font-weight: 600; color: #1f2937; text-align: right; }
+        .result-item span { color: #4b5563; white-space: pre-wrap; }
+
+        .long-notes-section { margin-top: 24px; background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; }
+        .long-notes-section h3 { font-size: 1.2rem; font-weight: 600; color: #374151; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid #10b981; }
+
+        .no-results { color: #ef4444; text-align: center; font-weight: 600; margin-top: 20px; }
+        
+        .history-toggle { background-color: #10b981; color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; margin: 24px auto 0; display: block; width: fit-content; }
+        .history-toggle:hover { background-color: #059669; }
+        .history-section { margin-top: 24px; border-top: 1px solid #e5e7eb; padding-top: 24px; display: none; }
+        .history-section h2 { text-align: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; }
+    </style>
+</head>
+<body class="flex justify-center items-start min-h-screen">
+    <div class="container">
+        <a href="https://longvt89.github.io/phieukiemtra/index.html" class="back-button">⬅️ Phiếu Kiểm Tra Xe</a>
+		<a href="https://longvt89.github.io/phieukiemtra/Phieukiemlop2.html" class="back-button">⬅️ Phiếu Kiểm Lốp</a>
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">Tra Cứu Thông Tin Xe</h1>
+        <p class="text-center text-gray-500 mb-8">Nhập Biển số xe hoặc Số điện thoại để tìm kiếm.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+                <label for="licensePlate" class="block text-sm font-medium text-gray-700">Biển số xe:</label>
+                <input type="text" id="licensePlate" placeholder="Ví dụ: 93C1-123.45" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+            <div>
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700">Số điện thoại:</label>
+                <input type="text" id="phoneNumber" placeholder="Ví dụ: 090xxxxxxx" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+            </div>
+        </div>
+
+        <button id="searchButton" class="search-button">🔍 Tìm Kiếm</button>
+        <div id="loadingSpinner" class="loading-spinner"></div>
+        <div id="results" class="result-section hidden"></div>
+    </div>
+
+    <script>
+        // Toàn bộ phần script không thay đổi
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzE44UQR_Mu1M9vAxnY6SmrHq-2hTPIr1I-0rpTztwPoN-PoEL0psVLvXb8HY746mRz/exec';
+
+        const FIELD_GROUPS = [
+            {
+                title: 'Thông Tin Chung',
+                fields: ['hoten', 'customerName', 'dienthoai', 'email', 'bienso', 'licensePlate', 'loaixe', 'carModel', 'hangXe', 'vehicleTypeYear', 'sokm', 'mileage', 'sokmhientai', 'chiNhanh', 'branch']
+            },
+            {
+                title: 'Thông Tin Dịch Vụ',
+                fields: ['receiptNumber', 'nhanxe', 'giaoxe', 'duKienGiaoXe', 'inspectionDate', 'advisor', 'serviceAdvisor', 'ktv', 'technician', 'nguoiTiepNhan']
+            },
+            {
+                title: 'Tình Trạng Lốp & Phanh',
+                fields: ['tire_pressure_FL', 'tire_thickness_FL', 'tire_pressure_FR', 'tire_thickness_FR', 'tire_pressure_RL', 'tire_thickness_RL', 'tire_pressure_RR', 'tire_thickness_RR', 'tire_pressure_Spare', 'tire_thickness_Spare', 'front_brake_pad', 'rear_brake_pad', 'brakeNote', 'brake_recommendation']
+            }
+        ];
+        
+        const LONG_TEXT_FIELDS = new Set(['yeuCauKhachHang', 'customerRequest', 'note', 'ghiChuChung', 'tireOverallCondition', 'tireStatusNote', 'bangChiTietCongViec', 'thongTinDichVuChiTiet', 'chiTietKiemTraAnToan']);
+
+        const FIELD_LABELS = { hoten: "Tên KH", customerName: "Tên KH", dienthoai: "SĐT", bienso: "Biển Số", licensePlate: "Biển Số", loaixe: "Loại Xe", carModel: "Dòng Xe", sokm: "Số KM", sokmhientai: "Số KM", mileage: "Số KM", chiNhanh: "Chi Nhánh", branch: "Chi Nhánh", nhanxe: "Ngày Nhận", giaoxe: "Ngày Giao", receiptNumber: "Số Phiếu", ghiChuChung: "Ghi Chú Chung", tire_pressure_FL: "Áp suất (Trước Trái)", tire_thickness_FL: "Độ dày gai (Trước Trái)", tire_pressure_FR: "Áp suất (Trước Phải)", tire_thickness_FR: "Độ dày gai (Trước Phải)", tire_pressure_RL: "Áp suất (Sau Trái)", tire_thickness_RL: "Độ dày gai (Sau Trái)", tire_pressure_RR: "Áp suất (Sau Phải)", tire_thickness_RR: "Độ dày gai (Sau Phải)", tire_pressure_Spare: "Áp suất (Sơ cua)", tire_thickness_Spare: "Độ dày gai (Sơ cua)", hangXe: "Hãng Xe", vehicleTypeYear: "Đời Xe", duKienGiaoXe: "Dự Kiến Giao", inspectionDate: "Ngày KT", advisor: "Cố vấn DV", serviceAdvisor: "Cố vấn DV", ktv: "KTV", technician: "KTV", nguoiTiepNhan: "Người nhận", front_brake_pad: "Phanh trước", rear_brake_pad: "Phanh sau", brakeNote: "Ghi chú phanh", brake_recommendation: "KN phanh", yeuCauKhachHang: "Yêu cầu KH", customerRequest: "Yêu cầu KH", note: "Ghi chú", tireOverallCondition: "Tổng quan lốp", tireStatusNote: "Ghi chú lốp", bangChiTietCongViec: "Chi tiết công việc", thongTinDichVuChiTiet: "Chi tiết dịch vụ", chiTietKiemTraAnToan: "KT an toàn" };
+        
+        const searchButton = document.getElementById('searchButton');
+        const licensePlateInput = document.getElementById('licensePlate');
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const resultsContainer = document.getElementById('results');
+
+        searchButton.addEventListener('click', searchData);
+
+        function displayResults(records) {
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.remove('hidden');
+            const latestHtml = createRecordDetailHtml(records[0], true);
+            resultsContainer.insertAdjacentHTML('beforeend', latestHtml);
+            if (records.length > 1) {
+                const historyButton = `<button id="historyToggleBtn" class="history-toggle">Xem ${records.length - 1} lần ghé trước</button>`;
+                resultsContainer.insertAdjacentHTML('beforeend', historyButton);
+                const historySection = `<div id="historySection" class="history-section"><h2>Lịch sử các lần trước</h2></div>`;
+                resultsContainer.insertAdjacentHTML('beforeend', historySection);
+                const historyContainer = document.getElementById('historySection');
+                const historyHtml = records.slice(1).map(rec => createRecordDetailHtml(rec, false)).join('');
+                historyContainer.innerHTML += historyHtml;
+                document.getElementById('historyToggleBtn').addEventListener('click', () => {
+                    historyContainer.style.display = historyContainer.style.display === 'none' ? 'block' : 'none';
+                });
+            }
+        }
+
+        function createRecordDetailHtml(record, isLatest = true) {
+            let processedFields = new Set();
+            let html = `<div class="result-container mb-8">`;
+            const headerTitle = isLatest ? 'Kết quả mới nhất' : `${record.FormType || 'N/A'}`;
+            html += `<div class="result-header ${!isLatest ? 'border-t pt-8' : ''}"><h2>${headerTitle}</h2><p>${record.Timestamp || 'N/A'}</p></div>`;
+            html += `<div class="result-grid">`;
+            FIELD_GROUPS.forEach(group => {
+                const groupItems = group.fields.map(fieldKey => {
+                    if (record[fieldKey]) {
+                        processedFields.add(fieldKey);
+                        const label = FIELD_LABELS[fieldKey] || fieldKey;
+                        return `<div class="result-item"><strong>${label}:</strong> <span>${record[fieldKey]}</span></div>`;
+                    }
+                    return '';
+                }).join('');
+                if (groupItems) {
+                    html += `<div class="result-group"><h3>${group.title}</h3>${groupItems}</div>`;
+                }
+            });
+            let otherItems = '';
+            for (const key in record) {
+                if (record[key] && !processedFields.has(key) && !LONG_TEXT_FIELDS.has(key)) {
+                    processedFields.add(key);
+                    const label = FIELD_LABELS[key] || key;
+                    otherItems += `<div class="result-item"><strong>${label}:</strong> <span>${record[key]}</span></div>`;
+                }
+            }
+            if (otherItems) {
+                 html += `<div class="result-group"><h3>Thông Tin Khác</h3>${otherItems}</div>`;
+            }
+            html += `</div>`;
+            let longNotesHtml = '';
+            LONG_TEXT_FIELDS.forEach(key => {
+                if (record[key]) {
+                    const label = FIELD_LABELS[key] || key;
+                    longNotesHtml += `<div class="result-item"><strong>${label}:</strong> <span>${record[key]}</span></div>`;
+                }
+            });
+            if (longNotesHtml) {
+                html += `<div class="long-notes-section"><h3>Chi Tiết & Ghi Chú</h3>${longNotesHtml}</div>`;
+            }
+            html += `</div>`;
+            return html;
+        }
+
+        function displayError(message) {
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.innerHTML = `<div class="no-results">${message}</div>`;
+        }
+        
+        async function searchData() {
+            const plate = licensePlateInput.value.trim();
+            const phone = phoneNumberInput.value.trim();
+            if (!plate && !phone) { alert('Vui lòng nhập Biển số xe hoặc Số điện thoại.'); return; }
+            loadingSpinner.style.display = 'block';
+            resultsContainer.innerHTML = '';
+            resultsContainer.classList.add('hidden');
+            try {
+                const url = new URL(SCRIPT_URL);
+                if (plate) url.searchParams.append('plate', plate);
+                if (phone) url.searchParams.append('phone', phone);
+                const response = await fetch(url);
+                const result = await response.json();
+                if (result.result === 'success' && result.data && result.data.length > 0) {
+                    displayResults(result.data);
+                } else if (result.result === 'error') {
+                    displayError(result.message);
+                } else {
+                    displayError('Không tìm thấy thông tin phù hợp.');
+                }
+            } catch (error) {
+                console.error('Lỗi khi tìm kiếm:', error);
+                displayError('Đã xảy ra lỗi kết nối. Vui lòng thử lại.');
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
