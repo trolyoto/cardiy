@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phiếu Kiểm Tra Lốp Xe - CARDIY</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#f2f2f2;
+padding:20px;
+}
+
+.container{
+background:white;
+max-width:900px;
+margin:auto;
+padding:20px;
+border:1px solid #ccc;
+}
+
+h1{
+text-align:center;
+color:#003366;
+}
+
+.row{
+display:flex;
+gap:10px;
+margin-bottom:10px;
+}
+
+input,select{
+padding:8px;
+width:100%;
+border:1px solid #ccc;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table,th,td{
+border:1px solid #ccc;
+}
+
+th,td{
+padding:8px;
+text-align:center;
+}
+
+button{
+background:#004aad;
+color:white;
+border:none;
+padding:10px 20px;
+margin-top:10px;
+cursor:pointer;
+}
+
+button:hover{
+background:#002f6c;
+}
+
+.recommend{
+background:#fff6d6;
+padding:10px;
+margin-top:15px;
+}
+
+.print{
+background:#009933;
+}
+
+@media print{
+
+button{
+display:none;
+}
+
+body{
+background:white;
+}
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+<h1>PHIẾU KIỂM TRA LỐP XE</h1>
+
+<h3>Thông tin khách hàng</h3>
+
+<div class="row">
+<input id="tenkhach" placeholder="Tên khách hàng">
+<input id="dienthoai" placeholder="Điện thoại">
+</div>
+
+<div class="row">
+<input id="bienso" placeholder="Biển số xe">
+<input id="dongxe" placeholder="Dòng xe">
+</div>
+
+
+<h3>Kiểm tra lốp</h3>
+
+<table>
+
+<tr>
+<th>Vị trí</th>
+<th>Độ dày (mm)</th>
+<th>Áp suất (psi)</th>
+<th>Tình trạng</th>
+</tr>
+
+<tr>
+<td>Lốp trước trái</td>
+<td><input id="fl_depth" type="number"></td>
+<td><input id="fl_pressure" type="number"></td>
+<td>
+<select id="fl_status">
+<option>Tốt</option>
+<option>Mòn</option>
+<option>Nứt</option>
+<option>Phù</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td>Lốp trước phải</td>
+<td><input id="fr_depth" type="number"></td>
+<td><input id="fr_pressure" type="number"></td>
+<td>
+<select id="fr_status">
+<option>Tốt</option>
+<option>Mòn</option>
+<option>Nứt</option>
+<option>Phù</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td>Lốp sau trái</td>
+<td><input id="rl_depth" type="number"></td>
+<td><input id="rl_pressure" type="number"></td>
+<td>
+<select id="rl_status">
+<option>Tốt</option>
+<option>Mòn</option>
+<option>Nứt</option>
+<option>Phù</option>
+</select>
+</td>
+</tr>
+
+<tr>
+<td>Lốp sau phải</td>
+<td><input id="rr_depth" type="number"></td>
+<td><input id="rr_pressure" type="number"></td>
+<td>
+<select id="rr_status">
+<option>Tốt</option>
+<option>Mòn</option>
+<option>Nứt</option>
+<option>Phù</option>
+</select>
+</td>
+</tr>
+
+</table>
+
+
+
+<div class="recommend">
+
+<h3>Khuyến nghị dịch vụ</h3>
+
+<label>
+<input type="checkbox" id="dao_lop">
+Đảo lốp
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="can_bang">
+Cân bằng động
+</label>
+
+<br>
+
+<label>
+<input type="checkbox" id="thay_lop">
+Thay lốp
+</label>
+
+</div>
+
+
+
+<h3>Ghi chú kỹ thuật</h3>
+
+<textarea id="ghichu" style="width:100%;height:80px"></textarea>
+
+
+
+<br>
+
+<button onclick="saveData()">Lưu Phiếu</button>
+
+<button class="print" onclick="window.print()">In Phiếu</button>
+
+<button onclick="clearForm()">Phiếu Mới</button>
+
+</div>
+
+
+
+<script>
+
+function saveData(){
+
+let data={
+
+ten:document.getElementById("tenkhach").value,
+phone:document.getElementById("dienthoai").value,
+plate:document.getElementById("bienso").value,
+car:document.getElementById("dongxe").value,
+
+fl_depth:document.getElementById("fl_depth").value,
+fr_depth:document.getElementById("fr_depth").value,
+rl_depth:document.getElementById("rl_depth").value,
+rr_depth:document.getElementById("rr_depth").value,
+
+}
+
+localStorage.setItem("kiemtralop",JSON.stringify(data))
+
+alert("Đã lưu phiếu kiểm tra")
+
+}
+
+
+
+function clearForm(){
+
+if(confirm("Tạo phiếu mới ?")){
+
+localStorage.removeItem("kiemtralop")
+
+location.reload()
+
+}
+
+}
+
+
+
+function loadData(){
+
+let data=localStorage.getItem("kiemtralop")
+
+if(data){
+
+data=JSON.parse(data)
+
+document.getElementById("tenkhach").value=data.ten
+document.getElementById("dienthoai").value=data.phone
+document.getElementById("bienso").value=data.plate
+document.getElementById("dongxe").value=data.car
+
+document.getElementById("fl_depth").value=data.fl_depth
+document.getElementById("fr_depth").value=data.fr_depth
+document.getElementById("rl_depth").value=data.rl_depth
+document.getElementById("rr_depth").value=data.rr_depth
+
+}
+
+}
+
+loadData()
+
+</script>
+
+</body>
+</html>
