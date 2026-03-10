@@ -16,10 +16,7 @@ export default function Home() {
         marginBottom:"40px"
       }}>
 
-        <img 
-        src="/logo.png"
-        style={{height:"60px"}}
-        />
+       <img src="/logo%20phi%20long.png" style={{height:"70px"}} />
 
         <div>
 
