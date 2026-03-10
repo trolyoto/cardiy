@@ -1,19 +1,31 @@
-export default function Home() {
+export default function Home(){
 
 const btnStyle = {
-  background:"#0a3d91",
-  color:"white",
-  padding:"14px 28px",
-  borderRadius:"8px",
-  border:"none",
-  fontSize:"16px",
-  cursor:"pointer",
-  marginRight:"15px",
-  marginTop:"15px",
-  minWidth:"200px"
+background:"#0a3d91",
+color:"white",
+padding:"14px 28px",
+borderRadius:"8px",
+border:"none",
+fontSize:"16px",
+cursor:"pointer",
+marginRight:"15px",
+marginTop:"15px",
+minWidth:"200px"
 }
 
-return (
+const subBtn = {
+background:"#ffffff",
+color:"#0a3d91",
+padding:"10px 20px",
+borderRadius:"6px",
+border:"2px solid #0a3d91",
+fontSize:"15px",
+cursor:"pointer",
+marginRight:"10px",
+marginTop:"10px"
+}
+
+return(
 
 <div style={{
 fontFamily:"Arial",
@@ -60,23 +72,13 @@ Trợ Lý Ô Tô Thông Minh
 </div>
 
 
-{/* DASHBOARD BUTTONS */}
+{/* MENU CHÍNH */}
 
-<div style={{
-marginTop:"40px"
-}}>
+<div style={{marginTop:"40px"}}>
 
-<a href="#">
 <button style={btnStyle}>
 🚗 Kiểm Tra Xe
 </button>
-</a>
-
-<a href="#">
-<button style={btnStyle}>
-🔧 Kiểm Tra Gầm
-</button>
-</a>
 
 <a href="/phieu_cap_bao_duong.html">
 <button style={btnStyle}>
@@ -84,16 +86,39 @@ marginTop:"40px"
 </button>
 </a>
 
-<a href="#">
 <button style={btnStyle}>
 📘 Blog Kiến Thức
 </button>
+
+</div>
+
+
+{/* MODULE KIỂM TRA XE */}
+
+<div style={{marginTop:"30px"}}>
+
+<h3 style={{color:"#0a3d91"}}>
+Module Kiểm Tra Xe
+</h3>
+
+<a href="/kiemtra_lop.html">
+<button style={subBtn}>🛞 Kiểm Tra Lốp</button>
 </a>
 
-<a href="/phieu_cap_bao_duong.html">
-<button style={btnStyle}>
-🧾 Phiếu Cấp Bảo Dưỡng
-</button>
+<a href="/kiemtra_gam.html">
+<button style={subBtn}>🔧 Kiểm Tra Gầm</button>
+</a>
+
+<a href="/phieu_nhan_xe.html">
+<button style={subBtn}>📄 Phiếu Nhận Xe</button>
+</a>
+
+<a href="/phieu_sua_chua.html">
+<button style={subBtn}>🛠 Phiếu Sửa Chữa</button>
+</a>
+
+<a href="/lich_su_xe.html">
+<button style={subBtn}>📊 Lịch Sử Xe</button>
 </a>
 
 </div>
