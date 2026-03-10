@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Phiếu Xác Định Cấp Bảo Dưỡng</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#eef2f5;
+margin:0;
+}
+
+header{
+background:#ffd400;
+padding:20px;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.container{
+width:850px;
+margin:auto;
+background:white;
+padding:30px;
+margin-top:30px;
+box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+h2{
+color:#0a3d91;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:4px;
+}
+
+button{
+background:#0a3d91;
+color:white;
+padding:12px 25px;
+border:none;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+background:#072a66;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+font-size:20px;
+font-weight:bold;
+}
+
+.level1{
+background:#ffe88c;
+}
+
+.level2{
+background:#cfe3ff;
+}
+
+.level3{
+background:#d9d9d9;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#ffd400;
+}
+
+.good{
+background:#ffe88c;
+}
+
+.warn{
+background:#cfe3ff;
+}
+
+replace{
+background:#d9d9d9;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+PHI LONG AUTO - PHIẾU CẤP BẢO DƯỠNG
+</header>
+
+<div class="container">
+
+<h2>Thông tin xe</h2>
+
+<label>Khách hàng</label>
+<input id="khach">
+
+<label>Biển số xe</label>
+<input id="bienso">
+
+<label>Hãng xe</label>
+<input id="hangxe">
+
+<label>Kilomet hiện tại</label>
+<input id="km" type="number">
+
+
+<h2>Chọn cấp bảo dưỡng</h2>
+
+<select id="cap">
+
+<option value="1">Cấp 1 - Kiểm tra an toàn</option>
+
+<option value="2">Cấp 2 - Bảo dưỡng nhanh</option>
+
+<option value="3">Cấp 3 - Bảo dưỡng lớn</option>
+
+</select>
+
+<button onclick="tinhBaoDuong()">Tính lịch bảo dưỡng</button>
+
+<div id="ketqua" class="result"></div>
+
+
+<h2>Chu kỳ bảo dưỡng tiêu chuẩn</h2>
+
+<table>
+
+<tr>
+<th>Cấp</th>
+<th>Hạng mục</th>
+<th>Màu trạng thái</th>
+</tr>
+
+<tr>
+<td>Cấp 1</td>
+<td>Kiểm tra an toàn</td>
+<td class="good">Vàng - Tốt</td>
+</tr>
+
+<tr>
+<td>Cấp 2</td>
+<td>Thay dầu - lọc</td>
+<td class="warn">Xanh - Theo dõi</td>
+</tr>
+
+<tr>
+<td>Cấp 3</td>
+<td>Bảo dưỡng lớn</td>
+<td style="background:#d9d9d9">Xám - Thay</td>
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+function tinhBaoDuong(){
+
+let km=parseInt(document.getElementById("km").value)
+
+let cap=document.getElementById("cap").value
+
+let nextKM=0
+
+if(cap==1){
+
+nextKM=km+5000
+
+}
+
+if(cap==2){
+
+nextKM=km+10000
+
+}
+
+if(cap==3){
+
+nextKM=km+20000
+
+}
+
+document.getElementById("ketqua").innerHTML=
+"Xe cần bảo dưỡng tiếp theo tại: "+nextKM+" km"
+
+}
+
+</script>
+
+</body>
+</html>
