@@ -217,7 +217,7 @@ src="https://cdn.pixabay.com/photo/2013/07/13/10/07/car-156106_1280.png">
 
 <div class="card">
 <a href="/phieu/index.html">
-  🚗 Kiểm tra xe
+🚗 Kiểm tra xe
 </a>
 </div>
 
