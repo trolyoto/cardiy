@@ -1,139 +1,123 @@
+"use client";
+
+import { useState } from "react";
+
 export default function Home() {
-  return (
-    <div style={{display:"flex",fontFamily:"Arial",background:"#f4f6fb"}}>
 
-      {/* SIDEBAR */}
+const [page,setPage] = useState(
+"https://trolyoto.github.io/phieukiemtra/baoduong.html"
+)
 
-      <div style={{
-        width:"260px",
-        background:"#123a7a",
-        color:"white",
-        height:"100vh",
-        padding:"20px",
-        boxShadow:"3px 0 10px rgba(0,0,0,0.1)"
-      }}>
+return (
 
-        <h2 style={{marginBottom:"5px"}}>CARDIY</h2>
-        <p style={{fontSize:"12px",opacity:"0.8"}}>Trợ Lý Ô Tô</p>
+<div style={{display:"flex",fontFamily:"Arial"}}>
 
-        <hr style={{margin:"20px 0"}}/>
+{/* SIDEBAR */}
 
-        <h4>SERVICE</h4>
+<div style={{
+width:"250px",
+background:"#1e4a8d",
+color:"white",
+height:"100vh",
+padding:"20px"
+}}>
 
-        <a href="https://trolyoto.github.io/phieukiemtra/baoduong.html" target="_blank" style={menu}>
-          🚗 Kiểm tra xe
-        </a>
+<h2>CARDIY</h2>
+<p style={{fontSize:"12px"}}>Trợ Lý Ô Tô</p>
 
-        <a href="https://trolyoto.github.io/phieukiemtra/Phieukiemlop2.html" target="_blank" style={menu}>
-          🛞 Kiểm tra lốp
-        </a>
+<hr/>
 
-        <a href="https://trolyoto.github.io/phieukiemtra/kiemtragam.html" target="_blank" style={menu}>
-          🔧 Kiểm tra gầm
-        </a>
+<h4>SERVICE</h4>
 
-        <hr style={{margin:"20px 0"}}/>
+<div style={menu} onClick={()=>setPage("https://trolyoto.github.io/phieukiemtra/baoduong.html")}>
+🚗 Kiểm tra xe
+</div>
 
-        <h4>WORKSHOP</h4>
+<div style={menu} onClick={()=>setPage("https://trolyoto.github.io/phieukiemtra/Phieukiemlop2.html")}>
+🛞 Kiểm tra lốp
+</div>
 
-        <div style={menu}>📄 Phiếu nhận xe</div>
-        <div style={menu}>🛠 Phiếu sửa chữa</div>
+<div style={menu} onClick={()=>setPage("https://trolyoto.github.io/phieukiemtra/kiemtragam.html")}>
+🔧 Kiểm tra gầm
+</div>
 
-        <hr style={{margin:"20px 0"}}/>
+<hr/>
 
-        <h4>CUSTOMER</h4>
+<h4>WORKSHOP</h4>
 
-        <div style={menu}>👥 CRM khách hàng</div>
-        <div style={menu}>📊 Lịch sử xe</div>
+<div style={menu} onClick={()=>setPage("https://trolyoto.github.io/phieukiemtra/phieunhandichvu.html")}>
+📄 Phiếu nhận xe
+</div>
 
-        <hr style={{margin:"20px 0"}}/>
+<div style={menu}>
+🛠 Phiếu sửa chữa
+</div>
 
-        <h4>BOOKING</h4>
+<hr/>
 
-        <div style={menu}>📅 Đặt lịch bảo dưỡng</div>
+<h4>CUSTOMER</h4>
 
-        <hr style={{margin:"20px 0"}}/>
+<div style={menu}>👥 CRM khách hàng</div>
 
-        <h4>BLOG</h4>
+<div style={menu}>📊 Lịch sử xe</div>
 
-        <div style={menu}>✍️ Viết bài chia sẻ</div>
+<hr/>
 
-      </div>
+<h4>BOOKING</h4>
+
+<div style={menu}>📅 Đặt lịch bảo dưỡng</div>
+
+<hr/>
+
+<h4>BLOG</h4>
+
+<div style={menu}>✍️ Viết bài chia sẻ</div>
+
+</div>
 
 
-      {/* MAIN */}
 
-      <div style={{flex:1,padding:"40px"}}>
+{/* MAIN */}
 
-        <h1 style={{marginBottom:"5px"}}>TRẠM DỊCH VỤ CARDIY</h1>
-        <p style={{color:"#777",marginBottom:"30px"}}>
-          Nền tảng quản lý dịch vụ ô tô
-        </p>
+<div style={{
+flex:1,
+padding:"30px",
+background:"#f4f6fb"
+}}>
 
-        {/* DASHBOARD CARD */}
+<h2>TRẠM DỊCH VỤ CARDIY</h2>
+<p style={{color:"#666"}}>
+Nền tảng quản lý dịch vụ ô tô
+</p>
 
-        <div style={{
-          display:"grid",
-          gridTemplateColumns:"repeat(3,1fr)",
-          gap:"20px",
-          marginBottom:"30px"
-        }}>
 
-          <a href="https://trolyoto.github.io/phieukiemtra/baoduong.html" target="_blank" style={card}>
-            🚗 Kiểm tra xe
-          </a>
+{/* FORM */}
 
-          <a href="https://trolyoto.github.io/phieukiemtra/Phieukiemlop2.html" target="_blank" style={card}>
-            🛞 Kiểm tra lốp
-          </a>
+<iframe
+src={page}
+style={{
+width:"100%",
+height:"900px",
+border:"none",
+borderRadius:"10px",
+background:"white",
+boxShadow:"0 10px 30px rgba(0,0,0,0.1)"
+}}
+/>
 
-          <a href="https://trolyoto.github.io/phieukiemtra/kiemtragam.html" target="_blank" style={card}>
-            🔧 Kiểm tra gầm
-          </a>
+</div>
 
-        </div>
+</div>
 
-        {/* FORM */}
+)
 
-        <iframe
-          src="https://trolyoto.github.io/phieukiemtra/baoduong.html"
-          style={{
-            width:"100%",
-            height:"850px",
-            border:"none",
-            borderRadius:"10px",
-            background:"white",
-            boxShadow:"0 5px 20px rgba(0,0,0,0.15)"
-          }}
-        />
-
-      </div>
-
-    </div>
-  )
 }
-
-
-/* STYLE */
 
 const menu = {
-  background:"white",
-  color:"#333",
-  padding:"10px",
-  borderRadius:"8px",
-  marginTop:"10px",
-  display:"block",
-  textDecoration:"none",
-  cursor:"pointer"
-}
-
-const card = {
-  background:"white",
-  padding:"30px",
-  borderRadius:"12px",
-  textAlign:"center",
-  fontWeight:"bold",
-  textDecoration:"none",
-  color:"#123a7a",
-  boxShadow:"0 5px 15px rgba(0,0,0,0.1)"
+background:"white",
+color:"#333",
+padding:"10px",
+borderRadius:"8px",
+marginTop:"10px",
+cursor:"pointer"
 }
