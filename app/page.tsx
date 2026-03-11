@@ -222,11 +222,14 @@ src="https://cdn.pixabay.com/photo/2013/07/13/10/07/car-156106_1280.png">
 </div>
 
 <div class="card">
-🛞 Kiểm tra lốp
-</div>
+🛞 <a href="/phieu/phieu_kiem_tra_lop.html">
+  🛞 Kiểm tra lốp
+</a>
 
 <div class="card">
-🔧 Kiểm tra gầm
+🔧 <a href="/phieu/kiemtragam.html">
+  🔧 Kiểm tra gầm
+</a>
 </div>
 
 <div class="card">
