@@ -1,4 +1,70 @@
-<!DOCTYPE html>
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-gray-100">
+
+      {/* HEADER */}
+      <div className="bg-white shadow px-6 py-3 flex items-center justify-between">
+
+        <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-2">
+            <div className="text-2xl">🚗</div>
+            <div>
+              <div className="font-bold text-lg">CARDIY</div>
+              <div className="text-xs bg-yellow-100 px-2 py-1 rounded">
+                Trợ lý ô tô thông minh
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-6 ml-6">
+            <span className="text-gray-500">Quản lý xe</span>
+            <span className="border-b-2 border-yellow-400 font-bold">
+              Đặt lịch
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <button className="bg-yellow-400 px-4 py-2 rounded font-semibold">
+            📅 Đặt lịch bảo dưỡng
+          </button>
+
+          <img src="/robot.png" className="w-10" />
+        </div>
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-10">
+
+        <h1 className="text-3xl font-bold mb-6">
+          Dashboard
+        </h1>
+
+        <div className="grid grid-cols-3 gap-6">
+
+          <div className="bg-white p-6 rounded-xl shadow border-l-4 border-yellow-400">
+            <h2 className="font-bold text-xl">Quản lý xe</h2>
+            <p>Thêm xe, theo dõi lịch sử</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow border-l-4 border-yellow-400">
+            <h2 className="font-bold text-xl">Đặt lịch</h2>
+            <p>Đặt lịch nhanh</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow border-l-4 border-yellow-400">
+            <h2 className="font-bold text-xl">Nhắc bảo dưỡng</h2>
+            <p>Không lo quên lịch</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
 <html lang="vi">
 
 <head>
