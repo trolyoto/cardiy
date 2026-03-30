@@ -306,5 +306,72 @@ Gửi Google Sheet
 
 </div>
 
-</body>
+</body><!-- HEADER -->
+<div class="bg-white shadow mb-6 rounded p-4 flex items-center justify-between">
+
+    <div class="flex items-center gap-3">
+        <img src="https://cdn-icons-png.flaticon.com/512/743/743922.png" style="height:40px;">
+        <div>
+            <div class="font-bold text-lg">CARDIY</div>
+            <div class="text-sm text-gray-500">Trợ lý ô tô thông minh</div>
+        </div>
+    </div>
+
+    <button class="bg-yellow-400 px-4 py-2 rounded font-semibold">
+        Đặt lịch bảo dưỡng
+    </button>
+
+</div>
+
+
+<!-- HERO SECTION -->
+<div class="bg-gradient-to-r from-yellow-100 to-yellow-50 p-6 rounded mb-6 shadow">
+
+    <h2 class="text-xl font-bold mb-2">
+        Kiểm tra gầm xe chuyên sâu
+    </h2>
+
+    <p class="text-gray-600 mb-4">
+        Đảm bảo an toàn – phát hiện sớm hư hỏng – tối ưu chi phí sửa chữa
+    </p>
+
+    <div class="flex gap-3">
+        <div class="bg-white p-3 rounded shadow text-center flex-1">
+            🚗 <br>
+            <span class="text-sm">Kiểm tra 20+ hạng mục</span>
+        </div>
+
+        <div class="bg-white p-3 rounded shadow text-center flex-1">
+            ⚡ <br>
+            <span class="text-sm">Nhanh & chính xác</span>
+        </div>
+
+        <div class="bg-white p-3 rounded shadow text-center flex-1">
+            🛠️ <br>
+            <span class="text-sm">Chuẩn kỹ thuật</span>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- QUICK ACTION -->
+<div class="grid grid-cols-3 gap-4 mb-6">
+
+    <div class="bg-white p-4 rounded shadow hover:shadow-lg cursor-pointer">
+        <div class="font-semibold">Quản lý xe</div>
+        <div class="text-sm text-gray-500">Thêm xe, lịch sử</div>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow hover:shadow-lg cursor-pointer">
+        <div class="font-semibold">Đặt lịch</div>
+        <div class="text-sm text-gray-500">Đặt nhanh</div>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow hover:shadow-lg cursor-pointer">
+        <div class="font-semibold">Nhắc bảo dưỡng</div>
+        <div class="text-sm text-gray-500">Tự động</div>
+    </div>
+
+</div>
 </html>
