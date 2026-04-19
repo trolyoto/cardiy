@@ -1,212 +1,197 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-import {
-  Bell,
-  Car,
-  CheckCircle2,
-  CircleDollarSign,
-  Clock3,
-  MapPin,
-  MessageCircle,
-  Phone,
-  Search,
-  UserCheck,
-  Wrench,
-  ArrowRight,
-  Gauge,
-  Sparkles,
-  Route,
-  KanbanSquare,
-  Plus,
-} from "lucide-react";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+type BookingStatus = "pending" | "doing" | "done";
 
-const STATUSES = ["Mới", "Đã nhận", "Đang điều phối", "Đang tới", "Đang làm", "Hoàn thành"];
-
-const STATUS_COLORS: Record<string, string> = {
-  "Mới": "bg-amber-50 text-amber-700 border-amber-200",
-  "Đã nhận": "bg-blue-50 text-blue-700 border-blue-200",
-  "Đang điều phối": "bg-violet-50 text-violet-700 border-violet-200",
-  "Đang tới": "bg-cyan-50 text-cyan-700 border-cyan-200",
-  "Đang làm": "bg-orange-50 text-orange-700 border-orange-200",
-  "Hoàn thành": "bg-emerald-50 text-emerald-700 border-emerald-200",
+type Booking = {
+  id: string;
+  customer_name: string;
+  phone: string;
+  plate: string;
+  km: number;
+  service: string;
+  status: BookingStatus;
+  note: string;
+  created_at: string;
 };
 
-const TECHNICIANS = [
-  { id: "ktv-gam-01", name: "KTV Nam", specialty: "gầm", area: "Thủ Đức", status: "Rảnh", jobs: 2 },
-  { id: "ktv-lop-01", name: "KTV Hùng", specialty: "lốp", area: "Bình Dương", status: "Đang làm", jobs: 3 },
-  { id: "ktv-mobile-01", name: "KTV Duy", specialty: "lưu động", area: "Lưu động", status: "Đang tới", jobs: 2 },
-  { id: "ktv-general-01", name: "KTV Phúc", specialty: "chung", area: "Quận 7", status: "Rảnh", jobs: 1 },
+const env =
+  typeof process !== "undefined" && process.env
+    ? process.env
+    : ({} as Record<string, string | undefined>);
+
+const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+
+const supabase =
+  supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : null;
+
+const STORAGE_KEY = "cardiy_crm_bookings_v2";
+
+const SERVICE_OPTIONS = [
+  "Bảo dưỡng nhanh",
+  "Bảo dưỡng hệ thống gầm",
+  "Thay dầu nhớt",
+  "Cân chỉnh thước lái 3D",
+  "Lọc gió điều hòa",
+  "Thay lốp xe",
+  "Thay ắc quy",
+  "Kiểm tra an toàn xe",
+  "Dịch vụ lưu động 24/7",
+];
+
+const seedBookings: Booking[] = [
+  {
+    id: "1",
+    customer_name: "Nguyễn Văn A",
+    phone: "0901234567",
+    plate: "51H-12345",
+    km: 12000,
+    service: "Thay dầu nhớt",
+    status: "pending",
+    note: "Khách chờ báo giá nhanh",
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "2",
+    customer_name: "Trần Văn B",
+    phone: "0912345678",
+    plate: "61A-88888",
+    km: 42000,
+    service: "Bảo dưỡng hệ thống gầm",
+    status: "doing",
+    note: "Xe đi đường dài nhiều",
+    created_at: new Date().toISOString(),
+  },
 ];
 
 function makeId() {
-  return `BK-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+  return `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 }
 
-function aiSuggest(service: string, km: number) {
-  const parts: string[] = [];
-  if (!km) parts.push("Nhập KM để AI tư vấn chính xác hơn.");
-  if (km > 0 && km < 10000) parts.push("Khuyến nghị thay dầu, kiểm tra lọc gió và an toàn cơ bản.");
-  if (km >= 10000 && km < 30000) parts.push("Khuyến nghị bảo dưỡng định kỳ, cân chỉnh thước lái 3D nếu xe lệch lái.");
-  if (km >= 30000 && km < 60000) parts.push("Khuyến nghị kiểm tra gầm, hệ thống treo, phanh và rotuyn.");
-  if (km >= 60000) parts.push("Khuyến nghị bảo dưỡng lớn, ưu tiên gầm, lái, phanh và kiểm tra tổng thể.");
+function getAiSuggestion(km: number, service: string) {
+  const tips: string[] = [];
 
-  if (service.toLowerCase().includes("gầm")) parts.push("Ưu tiên kỹ thuật viên chuyên gầm và kiểm tra bằng phiếu gầm.");
-  if (service.toLowerCase().includes("lốp") || service.toLowerCase().includes("ắc quy")) parts.push("Ưu tiên kỹ thuật nhanh để rút ngắn thời gian xử lý.");
-  if (service.toLowerCase().includes("lưu động")) parts.push("Kích hoạt điều phối lưu động và xác nhận ETA cho khách.");
+  if (!km) {
+    tips.push("Nhập KM để AI gợi ý chính xác hơn.");
+  } else if (km < 5000) {
+    tips.push("Xe còn mới, ưu tiên kiểm tra cơ bản và an toàn tổng quát.");
+  } else if (km < 10000) {
+    tips.push("Nên thay dầu nhớt và kiểm tra lọc gió.");
+  } else if (km < 30000) {
+    tips.push("Nên bảo dưỡng định kỳ và kiểm tra cân chỉnh nếu xe lệch lái.");
+  } else if (km < 60000) {
+    tips.push("Ưu tiên kiểm tra gầm, phanh, hệ thống treo và lốp.");
+  } else {
+    tips.push("Khuyến nghị bảo dưỡng lớn và kiểm tra tổng thể các hạng mục an toàn.");
+  }
 
-  return parts.join(" ");
+  const s = service.toLowerCase();
+
+  if (s.includes("dầu")) {
+    tips.push("Đề xuất kèm lọc nhớt và kiểm tra rò rỉ quanh máy.");
+  }
+  if (s.includes("gầm")) {
+    tips.push("Nên kiểm tra giảm xóc, rotuyn, cao su càng và góc lái.");
+  }
+  if (s.includes("lốp")) {
+    tips.push("Kiểm tra luôn độ mòn gai, áp suất hơi và đảo lốp nếu cần.");
+  }
+  if (s.includes("ắc quy")) {
+    tips.push("Đo điện áp, kiểm tra cọc bình và hệ thống sạc.");
+  }
+  if (s.includes("lưu động")) {
+    tips.push("Nên xác nhận vị trí khách và thời gian kỹ thuật đến dự kiến.");
+  }
+  if (s.includes("an toàn")) {
+    tips.push("Có thể upsell kiểm tra phanh, lốp, gạt mưa, ắc quy và nước làm mát.");
+  }
+
+  return tips.join(" ");
 }
 
-function autoAssignTech(service: string) {
-  const key = service.toLowerCase();
-  if (key.includes("gầm")) return TECHNICIANS.find((t) => t.specialty === "gầm")?.id || "";
-  if (key.includes("lốp") || key.includes("ắc quy")) return TECHNICIANS.find((t) => t.specialty === "lốp")?.id || "";
-  if (key.includes("lưu động")) return TECHNICIANS.find((t) => t.specialty === "lưu động")?.id || "";
-  return TECHNICIANS.find((t) => t.specialty === "chung")?.id || "";
-}
+export default function Page() {
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedId, setSelectedId] = useState<string>("");
+  const [search, setSearch] = useState("");
 
-const seedBookings = [
-  {
-    id: makeId(),
-    created_at: new Date().toISOString(),
-    customer_name: "Nguyễn Văn Minh",
-    plate: "61A-123.45",
-    phone: "0912345678",
-    service: "Bảo dưỡng nhanh",
-    mode: "Tại cửa hàng",
-    address: "Bình Dương",
-    km: 12000,
-    status: "Mới",
-    technician_id: "ktv-general-01",
-    revenue: 650000,
-    note: "Khách cần làm trong sáng nay",
-  },
-  {
-    id: makeId(),
-    created_at: new Date().toISOString(),
-    customer_name: "Trần Quốc Hải",
-    plate: "51H-889.22",
-    phone: "0988000111",
-    service: "Dịch vụ lưu động 24/7",
-    mode: "Lưu động",
-    address: "Vạn Phúc, Thủ Đức",
-    km: 45000,
-    status: "Đang tới",
-    technician_id: "ktv-mobile-01",
-    revenue: 250000,
-    note: "Hỗ trợ tận nơi, xe không nổ máy",
-  },
-  {
-    id: makeId(),
-    created_at: new Date().toISOString(),
-    customer_name: "Lê Thị Lan",
-    plate: "60K-456.78",
-    phone: "0909112233",
-    service: "Bảo dưỡng hệ thống gầm",
-    mode: "Tại cửa hàng",
-    address: "Chi nhánh Quận 7",
-    km: 62000,
-    status: "Đang làm",
-    technician_id: "ktv-gam-01",
-    revenue: 1800000,
-    note: "Xe kêu gầm, lệch lái",
-  },
-];
-
-export default function CardiyProV2() {
-  const [bookings, setBookings] = React.useState<any[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [search, setSearch] = React.useState("");
-  const [selectedId, setSelectedId] = React.useState("");
-  const [chat, setChat] = React.useState<any[]>([
-    { from: "bot", text: "Xin chào 👋 Tôi là AI cố vấn dịch vụ. Anh/chị cần báo giá hay đặt lịch?" },
-  ]);
-  const [chatInput, setChatInput] = React.useState("");
-  const [form, setForm] = React.useState({
+  const [form, setForm] = useState({
     customer_name: "",
-    plate: "",
     phone: "",
-    service: "Bảo dưỡng nhanh",
-    mode: "Tại cửa hàng",
-    address: "",
+    plate: "",
     km: "",
-    revenue: "",
+    service: "Bảo dưỡng nhanh",
     note: "",
   });
-
-  React.useEffect(() => {
-    loadBookings();
-  }, []);
-
-  React.useEffect(() => {
-    if (!supabase) return;
-    const channel = supabase
-      .channel("cardiy-v2-bookings")
-      .on("postgres_changes", { event: "*", schema: "public", table: "bookings" }, () => loadBookings())
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
 
   async function loadBookings() {
     setLoading(true);
     try {
       if (supabase) {
-        const { data, error } = await supabase.from("bookings").select("*").order("created_at", { ascending: false });
+        const { data, error } = await supabase
+          .from("bookings")
+          .select("*")
+          .order("created_at", { ascending: false });
+
         if (error) throw error;
-        const rows = data || [];
+
+        const rows = (data || []) as Booking[];
         setBookings(rows);
         if (rows[0]) setSelectedId((prev) => prev || rows[0].id);
       } else {
-        const local = JSON.parse(localStorage.getItem("cardiy_v2_bookings") || "null");
-        const rows = local || seedBookings;
-        localStorage.setItem("cardiy_v2_bookings", JSON.stringify(rows));
+        const local = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        const rows: Booking[] = local || seedBookings;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
         setBookings(rows);
         if (rows[0]) setSelectedId((prev) => prev || rows[0].id);
       }
     } catch (error) {
       console.error(error);
       setBookings(seedBookings);
-      setSelectedId(seedBookings[0].id);
+      setSelectedId(seedBookings[0]?.id || "");
     } finally {
       setLoading(false);
     }
   }
 
-  async function persistLocal(rows: any[]) {
-    localStorage.setItem("cardiy_v2_bookings", JSON.stringify(rows));
+  useEffect(() => {
+    loadBookings();
+  }, []);
+
+  async function persistLocal(rows: Booking[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(rows));
     setBookings(rows);
   }
 
   async function createBooking() {
-    if (!form.customer_name || !form.phone || !form.plate) return;
-    const service = form.service;
-    const techId = autoAssignTech(service);
-    const row = {
+    if (!form.customer_name || !form.phone || !form.plate) {
+      alert("Vui lòng nhập đủ Tên khách, SĐT, Biển số.");
+      return;
+    }
+
+    const row: Booking = {
       id: makeId(),
-      created_at: new Date().toISOString(),
       customer_name: form.customer_name,
-      plate: form.plate.toUpperCase(),
       phone: form.phone,
-      service,
-      mode: form.mode,
-      address: form.address,
+      plate: form.plate.toUpperCase(),
       km: Number(form.km || 0),
-      status: techId ? "Đã nhận" : "Mới",
-      technician_id: techId,
-      revenue: Number(form.revenue || 0),
+      service: form.service,
+      status: "pending",
       note: form.note,
+      created_at: new Date().toISOString(),
     };
 
     if (supabase) {
-      await supabase.from("bookings").insert(row);
+      const { error } = await supabase.from("bookings").insert(row);
+      if (error) {
+        alert("Lỗi tạo booking DB.");
+        return;
+      }
       await loadBookings();
     } else {
       const rows = [row, ...bookings];
@@ -216,238 +201,480 @@ export default function CardiyProV2() {
     setSelectedId(row.id);
     setForm({
       customer_name: "",
-      plate: "",
       phone: "",
-      service: "Bảo dưỡng nhanh",
-      mode: "Tại cửa hàng",
-      address: "",
+      plate: "",
       km: "",
-      revenue: "",
+      service: "Bảo dưỡng nhanh",
       note: "",
     });
   }
 
-  async function updateBooking(id: string, patch: any) {
+  async function updateStatus(id: string, status: BookingStatus) {
     if (supabase) {
-      await supabase.from("bookings").update(patch).eq("id", id);
-      await loadBookings();
+      const { error } = await supabase
+        .from("bookings")
+        .update({ status })
+        .eq("id", id);
+      if (!error) await loadBookings();
     } else {
-      const rows = bookings.map((b) => (b.id === id ? { ...b, ...patch } : b));
+      const rows = bookings.map((b) => (b.id === id ? { ...b, status } : b));
       await persistLocal(rows);
     }
   }
 
-  function sendChat() {
-    if (!chatInput.trim()) return;
-    const current = selectedBooking;
-    const ai = current
-      ? `${aiSuggest(current.service, Number(current.km || 0))} Trạng thái hiện tại: ${current.status}.`
-      : "Bên em đã nhận thông tin. Anh/chị để lại biển số và số điện thoại nhé.";
-    setChat((prev) => [...prev, { from: "user", text: chatInput }, { from: "bot", text: ai }]);
-    setChatInput("");
-  }
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase().trim();
+    if (!q) return bookings;
+    return bookings.filter((b) =>
+      `${b.customer_name} ${b.phone} ${b.plate} ${b.service} ${b.note}`
+        .toLowerCase()
+        .includes(q)
+    );
+  }, [bookings, search]);
 
-  const filtered = bookings.filter((b) => {
-    const key = `${b.customer_name} ${b.plate} ${b.phone} ${b.service} ${b.address}`.toLowerCase();
-    return key.includes(search.toLowerCase());
-  });
+  const selected =
+    filtered.find((b) => b.id === selectedId) ||
+    bookings.find((b) => b.id === selectedId) ||
+    null;
 
-  const selectedBooking = bookings.find((b) => b.id === selectedId) || null;
+  const aiText = useMemo(() => {
+    if (!selected) return getAiSuggestion(Number(form.km || 0), form.service);
+    return getAiSuggestion(selected.km, selected.service);
+  }, [selected, form.km, form.service]);
 
-  const stats = React.useMemo(() => ({
-    total: bookings.length,
-    pending: bookings.filter((b) => ["Mới", "Đã nhận", "Đang điều phối", "Đang tới", "Đang làm"].includes(b.status)).length,
-    completed: bookings.filter((b) => b.status === "Hoàn thành").length,
-    revenue: bookings.filter((b) => b.status === "Hoàn thành").reduce((sum, b) => sum + Number(b.revenue || 0), 0),
-  }), [bookings]);
-
-  const kanban = React.useMemo(() => {
-    const map: Record<string, any[]> = {};
-    STATUSES.forEach((s) => (map[s] = []));
-    bookings.forEach((b) => map[b.status]?.push(b));
-    return map;
-  }, [bookings]);
+  const columns: { key: BookingStatus; title: string }[] = [
+    { key: "pending", title: "Mới" },
+    { key: "doing", title: "Đang làm" },
+    { key: "done", title: "Hoàn thành" },
+  ];
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 md:p-6">
-      <div className="mx-auto max-w-7xl space-y-6">
-        <section className="rounded-[28px] bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 p-6 text-white shadow-xl">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold"><Sparkles className="h-3.5 w-3.5" /> CARDIY PRO V2</div>
-              <h1 className="mt-3 text-3xl font-black tracking-tight">UI vàng animate • Ripple • Auto assign • CRM • Dashboard realtime</h1>
-              <p className="mt-2 text-sm text-blue-100">Bản nâng cấp giống app điều phối, có thể chạy demo ngay và nối Supabase để lên production.</p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <a href="https://www.cardiy.vn/garages" target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-white/10 px-4 py-3 text-sm font-bold text-white hover:bg-white/20">Booking xưởng dịch vụ</a>
-              <a href="https://www.cardiy.vn/" target="_blank" rel="noopener noreferrer" className="rounded-2xl bg-yellow-400 px-4 py-3 text-sm font-black text-slate-900 hover:brightness-95">Mở cardiy.vn</a>
-            </div>
+    <div style={styles.page}>
+      <div style={styles.wrap}>
+        <div style={styles.header}>
+          <div>
+            <div style={styles.kicker}>CARDIY PRO</div>
+            <h1 style={styles.title}>Kanban + CRM + AI gợi ý dịch vụ</h1>
           </div>
-        </section>
+          <a
+            href="https://www.cardiy.vn/garages"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.topButton}
+          >
+            Booking xưởng dịch vụ
+          </a>
+        </div>
 
-        <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <StatCard icon={<Bell className="h-5 w-5" />} label="Booking tổng" value={stats.total} gradient="from-amber-50 to-white" />
-          <StatCard icon={<Clock3 className="h-5 w-5" />} label="Đang xử lý" value={stats.pending} gradient="from-cyan-50 to-white" />
-          <StatCard icon={<CheckCircle2 className="h-5 w-5" />} label="Hoàn thành" value={stats.completed} gradient="from-emerald-50 to-white" />
-          <StatCard icon={<CircleDollarSign className="h-5 w-5" />} label="Doanh thu" value={money(stats.revenue)} gradient="from-violet-50 to-white" />
-        </section>
+        <div style={styles.topGrid}>
+          <div style={styles.panel}>
+            <div style={styles.panelTitle}>Tạo booking / CRM</div>
 
-        <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.3fr_0.9fr]">
-          <Panel title="Điều phối realtime dạng Kanban" subtitle="Kéo được lên bước tiếp theo: drag & drop, map, SLA, ETA">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
-                <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Tìm khách, biển số, dịch vụ..." className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-10 pr-4 outline-none focus:border-blue-800" />
-              </div>
-              <button className="rounded-2xl bg-yellow-400 px-4 py-3 font-black text-slate-900 hover:brightness-95"><KanbanSquare className="mr-2 inline h-4 w-4" /> Live board</button>
-            </div>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-6">
-              {STATUSES.map((status) => (
-                <div key={status} className="rounded-3xl bg-slate-50 p-3 ring-1 ring-slate-200">
-                  <div className="mb-3 flex items-center justify-between">
-                    <div className="text-sm font-black text-slate-700">{status}</div>
-                    <span className="rounded-full bg-white px-2.5 py-1 text-xs font-bold text-slate-600 ring-1 ring-slate-200">{(kanban[status] || []).length}</span>
-                  </div>
-                  <div className="space-y-3">
-                    {(kanban[status] || [])
-                      .filter((b) => {
-                        const key = `${b.customer_name} ${b.plate} ${b.service}`.toLowerCase();
-                        return key.includes(search.toLowerCase());
-                      })
-                      .map((b) => (
-                        <button key={b.id} onClick={() => setSelectedId(b.id)} className={`w-full rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 hover:shadow-md ${selectedId === b.id ? 'border-blue-800 bg-blue-50 ring-2 ring-blue-100' : 'border-slate-200 bg-white'}`}>
-                          <div className="font-bold text-slate-900">{b.customer_name}</div>
-                          <div className="mt-1 text-sm text-slate-600">{b.service}</div>
-                          <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
-                            <span>{b.plate}</span>
-                            <span>{Number(b.km || 0).toLocaleString()} km</span>
-                          </div>
-                        </button>
-                      ))}
-                  </div>
-                </div>
+            <input
+              style={styles.input}
+              placeholder="Tên khách hàng"
+              value={form.customer_name}
+              onChange={(e) =>
+                setForm({ ...form, customer_name: e.target.value })
+              }
+            />
+
+            <input
+              style={styles.input}
+              placeholder="Số điện thoại"
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
+
+            <input
+              style={styles.input}
+              placeholder="Biển số xe"
+              value={form.plate}
+              onChange={(e) => setForm({ ...form, plate: e.target.value })}
+            />
+
+            <input
+              style={styles.input}
+              placeholder="KM hiện tại"
+              value={form.km}
+              onChange={(e) =>
+                setForm({ ...form, km: e.target.value.replace(/\D/g, "") })
+              }
+            />
+
+            <select
+              style={styles.input}
+              value={form.service}
+              onChange={(e) => setForm({ ...form, service: e.target.value })}
+            >
+              {SERVICE_OPTIONS.map((s) => (
+                <option key={s}>{s}</option>
               ))}
-            </div>
-          </Panel>
+            </select>
 
-          <div className="space-y-6">
-            <Panel title="Chi tiết booking & AI cố vấn" subtitle="AI gợi ý bảo dưỡng, Zalo OA, auto assign kỹ thuật">
-              {selectedBooking ? (
-                <div className="space-y-4">
-                  <div className="rounded-3xl bg-gradient-to-br from-yellow-50 to-white p-4 ring-1 ring-yellow-200">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <div className="text-xl font-black text-slate-900">{selectedBooking.customer_name}</div>
-                        <div className="mt-1 text-sm text-slate-500">{selectedBooking.plate} • {selectedBooking.phone}</div>
-                      </div>
-                      <span className={`rounded-full border px-3 py-1 text-xs font-bold ${STATUS_COLORS[selectedBooking.status]}`}>{selectedBooking.status}</span>
-                    </div>
-                    <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
-                      <Info icon={<Car className="h-4 w-4" />} label="Dịch vụ" value={selectedBooking.service} />
-                      <Info icon={<Gauge className="h-4 w-4" />} label="KM hiện tại" value={`${Number(selectedBooking.km || 0).toLocaleString()} km`} />
-                      <Info icon={<MapPin className="h-4 w-4" />} label="Địa chỉ" value={selectedBooking.address || selectedBooking.mode} />
-                      <Info icon={<Route className="h-4 w-4" />} label="AI gợi ý" value={aiSuggest(selectedBooking.service, Number(selectedBooking.km || 0))} />
-                    </div>
-                  </div>
+            <textarea
+              style={{ ...styles.input, minHeight: 84, resize: "vertical" as const }}
+              placeholder="Ghi chú"
+              value={form.note}
+              onChange={(e) => setForm({ ...form, note: e.target.value })}
+            />
 
-                  <select value={selectedBooking.status} onChange={(e) => updateBooking(selectedBooking.id, { status: e.target.value })} className={inputClass}>
-                    {STATUSES.map((s) => <option key={s}>{s}</option>)}
-                  </select>
-
-                  <select value={selectedBooking.technician_id || ""} onChange={(e) => updateBooking(selectedBooking.id, { technician_id: e.target.value })} className={inputClass}>
-                    <option value="">Chọn kỹ thuật phụ trách</option>
-                    {TECHNICIANS.map((t) => (
-                      <option key={t.id} value={t.id}>{t.name} • {t.specialty} • {t.area}</option>
-                    ))}
-                  </select>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <button onClick={() => updateBooking(selectedBooking.id, { technician_id: autoAssignTech(selectedBooking.service), status: "Đang điều phối" })} className="rounded-2xl bg-blue-900 px-4 py-3 text-sm font-bold text-white hover:bg-blue-800"><UserCheck className="mr-2 inline h-4 w-4" /> Auto assign</button>
-                    <button onClick={() => window.open(`https://zalo.me/0975767778?text=${encodeURIComponent(`🚗 CARDIY BOOKING\nBiển số: ${selectedBooking.plate}\nSĐT: ${selectedBooking.phone}\nDịch vụ: ${selectedBooking.service}\nKM: ${selectedBooking.km}\nAI gợi ý: ${aiSuggest(selectedBooking.service, Number(selectedBooking.km || 0))}`)}`, "_blank")} className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold hover:bg-slate-50"><MessageCircle className="mr-2 inline h-4 w-4" /> Chat Zalo thật</button>
-                    <button onClick={() => window.open(`tel:${selectedBooking.phone}`)} className="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold hover:bg-slate-50"><Phone className="mr-2 inline h-4 w-4" /> Gọi khách</button>
-                    <button onClick={() => updateBooking(selectedBooking.id, { status: "Hoàn thành" })} className="rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-500"><CheckCircle2 className="mr-2 inline h-4 w-4" /> Chốt hoàn thành</button>
-                  </div>
-                </div>
-              ) : <div className="text-sm text-slate-500">Chọn một booking để xem chi tiết.</div>}
-            </Panel>
-
-            <Panel title="Tạo booking / CRM khách hàng" subtitle="Dùng cho hotline, fanpage, web booking và lưu động">
-              <div className="space-y-3">
-                <Field label="Tên khách hàng"><input value={form.customer_name} onChange={(e) => setForm({ ...form, customer_name: e.target.value })} className={inputClass} /></Field>
-                <Field label="Biển số"><input value={form.plate} onChange={(e) => setForm({ ...form, plate: e.target.value.toUpperCase() })} className={inputClass} /></Field>
-                <Field label="Số điện thoại"><input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className={inputClass} /></Field>
-                <Field label="Dịch vụ"><select value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })} className={inputClass}><option>Bảo dưỡng nhanh</option><option>Bảo dưỡng hệ thống gầm</option><option>Thay dầu nhớt</option><option>Dịch vụ lưu động 24/7</option><option>Thay lốp xe</option><option>Thay ắc quy</option></select></Field>
-                <Field label="Hình thức"><select value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })} className={inputClass}><option>Tại cửa hàng</option><option>Lưu động</option></select></Field>
-                <Field label="Địa chỉ / chi nhánh"><input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className={inputClass} /></Field>
-                <Field label="KM hiện tại"><input value={form.km} onChange={(e) => setForm({ ...form, km: e.target.value.replace(/\D/g, "") })} className={inputClass} /></Field>
-                <Field label="Doanh thu dự kiến"><input value={form.revenue} onChange={(e) => setForm({ ...form, revenue: e.target.value.replace(/\D/g, "") })} className={inputClass} /></Field>
-                <Field label="Ghi chú"><input value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} className={inputClass} /></Field>
-                <div className="rounded-2xl bg-yellow-50 p-3 text-sm font-semibold text-amber-800 ring-1 ring-amber-200">AI đề xuất: {aiSuggest(form.service, Number(form.km || 0))}</div>
-                <button onClick={createBooking} className="w-full rounded-2xl bg-yellow-400 px-4 py-3 font-black text-slate-900 hover:brightness-95"><Plus className="mr-2 inline h-4 w-4" /> Tạo booking & auto assign</button>
-              </div>
-            </Panel>
-
-            <Panel title="Chat live / CRM" subtitle="Trả lời khách ngay trong dashboard">
-              <div className="space-y-3 max-h-[220px] overflow-auto rounded-2xl border border-slate-200 bg-slate-50 p-3">
-                {chat.map((m, i) => (
-                  <div key={i} className={`flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${m.from === 'user' ? 'bg-yellow-100 text-slate-900' : 'bg-white text-slate-700 ring-1 ring-slate-200'}`}>{m.text}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 flex gap-2">
-                <input value={chatInput} onChange={(e) => setChatInput(e.target.value)} className="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-blue-800" placeholder="Nhập nội dung tư vấn cho khách..." />
-                <button onClick={sendChat} className="rounded-2xl bg-blue-900 px-4 py-3 font-bold text-white hover:bg-blue-800">Gửi</button>
-              </div>
-            </Panel>
+            <button style={styles.primaryButton} onClick={createBooking}>
+              Tạo booking
+            </button>
           </div>
-        </section>
+
+          <div style={styles.panel}>
+            <div style={styles.panelTitle}>AI gợi ý dịch vụ</div>
+            <div style={styles.aiBox}>{aiText}</div>
+
+            <div style={{ marginTop: 14, fontSize: 13, color: "#666" }}>
+              AI đang dựa vào:
+              <div>- KM xe</div>
+              <div>- Dịch vụ đang chọn</div>
+              <div>- Trạng thái CRM hiện tại</div>
+            </div>
+          </div>
+
+          <div style={styles.panel}>
+            <div style={styles.panelTitle}>CRM khách hàng</div>
+
+            {selected ? (
+              <div style={{ lineHeight: 1.8 }}>
+                <div>
+                  <b>Khách:</b> {selected.customer_name}
+                </div>
+                <div>
+                  <b>SĐT:</b> {selected.phone}
+                </div>
+                <div>
+                  <b>Biển số:</b> {selected.plate}
+                </div>
+                <div>
+                  <b>KM:</b> {selected.km.toLocaleString()} km
+                </div>
+                <div>
+                  <b>Dịch vụ:</b> {selected.service}
+                </div>
+                <div>
+                  <b>Ghi chú:</b> {selected.note || "-"}
+                </div>
+                <div>
+                  <b>Ngày tạo:</b>{" "}
+                  {new Date(selected.created_at).toLocaleString("vi-VN")}
+                </div>
+
+                <div style={{ display: "flex", gap: 8, marginTop: 14, flexWrap: "wrap" }}>
+                  <a
+                    href={`https://zalo.me/0975767778?text=${encodeURIComponent(
+                      `🚗 CARDIY BOOKING
+Khách: ${selected.customer_name}
+SĐT: ${selected.phone}
+Biển số: ${selected.plate}
+KM: ${selected.km}
+Dịch vụ: ${selected.service}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.secondaryButton}
+                  >
+                    Chat Zalo
+                  </a>
+
+                  <a href={`tel:${selected.phone}`} style={styles.secondaryButton}>
+                    Gọi khách
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div style={{ color: "#777" }}>Chọn 1 booking để xem CRM.</div>
+            )}
+          </div>
+        </div>
+
+        <div style={styles.searchBarWrap}>
+          <input
+            style={styles.searchInput}
+            placeholder="Tìm theo tên khách, SĐT, biển số, dịch vụ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        {loading ? (
+          <div style={styles.loading}>Đang tải dữ liệu...</div>
+        ) : (
+          <div style={styles.kanban}>
+            {columns.map((col) => (
+              <div key={col.key} style={styles.column}>
+                <div style={styles.columnHeader}>
+                  <span>{col.title}</span>
+                  <span style={styles.badge}>
+                    {filtered.filter((b) => b.status === col.key).length}
+                  </span>
+                </div>
+
+                <div style={styles.cardList}>
+                  {filtered
+                    .filter((b) => b.status === col.key)
+                    .map((b) => (
+                      <div
+                        key={b.id}
+                        style={{
+                          ...styles.card,
+                          border:
+                            selectedId === b.id
+                              ? "2px solid #1d4ed8"
+                              : "1px solid #e5e7eb",
+                        }}
+                        onClick={() => setSelectedId(b.id)}
+                      >
+                        <div style={styles.cardTitle}>{b.customer_name}</div>
+                        <div style={styles.cardLine}>🚘 {b.plate}</div>
+                        <div style={styles.cardLine}>🔧 {b.service}</div>
+                        <div style={styles.cardLine}>📏 {b.km.toLocaleString()} km</div>
+                        <div style={styles.cardLine}>📞 {b.phone}</div>
+
+                        <div style={styles.cardActions}>
+                          {col.key !== "pending" && (
+                            <button
+                              style={styles.smallButton}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateStatus(b.id, "pending");
+                              }}
+                            >
+                              ← Mới
+                            </button>
+                          )}
+
+                          {col.key === "pending" && (
+                            <button
+                              style={styles.smallButton}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateStatus(b.id, "doing");
+                              }}
+                            >
+                              → Đang làm
+                            </button>
+                          )}
+
+                          {col.key === "doing" && (
+                            <button
+                              style={styles.smallButton}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateStatus(b.id, "done");
+                              }}
+                            >
+                              → Hoàn thành
+                            </button>
+                          )}
+
+                          {col.key === "done" && (
+                            <button
+                              style={styles.smallButton}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updateStatus(b.id, "doing");
+                              }}
+                            >
+                              ← Trả về
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-function Panel({ title, subtitle, children }: any) {
-  return (
-    <section className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
-      <h2 className="text-lg font-black tracking-tight">{title}</h2>
-      {subtitle ? <p className="mt-1 mb-4 text-sm text-slate-500">{subtitle}</p> : <div className="mb-4" />}
-      {children}
-    </section>
-  );
-}
-
-function StatCard({ icon, label, value, gradient }: any) {
-  return (
-    <div className={`rounded-3xl bg-gradient-to-br ${gradient} p-4 shadow-sm ring-1 ring-slate-200`}>
-      <div className="inline-flex rounded-2xl bg-white p-3 text-blue-800 shadow-sm">{icon}</div>
-      <div className="mt-3 text-sm font-semibold text-slate-500">{label}</div>
-      <div className="mt-1 text-2xl font-black">{value}</div>
-    </div>
-  );
-}
-
-function Field({ label, children }: any) {
-  return (
-    <label className="block">
-      <div className="mb-2 text-sm font-semibold text-slate-700">{label}</div>
-      {children}
-    </label>
-  );
-}
-
-function Info({ icon, label, value }: any) {
-  return (
-    <div className="rounded-2xl bg-white p-3 ring-1 ring-slate-200">
-      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">{icon} {label}</div>
-      <div className="mt-1 text-sm font-bold text-slate-900">{value}</div>
-    </div>
-  );
-}
-
-function money(v: number) {
-  return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(v || 0);
-}
-
-const inputClass = "w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none focus:border-blue-800";
-;
+const styles: Record<string, React.CSSProperties> = {
+  page: {
+    minHeight: "100vh",
+    background: "#fffbea",
+    padding: 20,
+    fontFamily: "Arial, sans-serif",
+  },
+  wrap: {
+    maxWidth: 1400,
+    margin: "0 auto",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 16,
+    marginBottom: 20,
+    flexWrap: "wrap",
+  },
+  kicker: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: "#a16207",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+  title: {
+    margin: "6px 0 0",
+    fontSize: 32,
+    fontWeight: 800,
+    color: "#111827",
+  },
+  topButton: {
+    background: "#facc15",
+    color: "#111827",
+    padding: "12px 16px",
+    borderRadius: 12,
+    textDecoration: "none",
+    fontWeight: 700,
+  },
+  topGrid: {
+    display: "grid",
+    gridTemplateColumns: "1.1fr 1fr 1fr",
+    gap: 16,
+    marginBottom: 20,
+  },
+  panel: {
+    background: "#fff",
+    border: "1px solid #f3f4f6",
+    borderRadius: 18,
+    padding: 16,
+    boxShadow: "0 8px 24px rgba(0,0,0,0.05)",
+  },
+  panelTitle: {
+    fontSize: 18,
+    fontWeight: 800,
+    marginBottom: 12,
+    color: "#111827",
+  },
+  input: {
+    width: "100%",
+    padding: "12px 14px",
+    marginBottom: 10,
+    borderRadius: 12,
+    border: "1px solid #d1d5db",
+    fontSize: 14,
+    boxSizing: "border-box",
+  },
+  primaryButton: {
+    width: "100%",
+    padding: "13px 16px",
+    borderRadius: 12,
+    border: "none",
+    background: "#facc15",
+    color: "#111827",
+    fontWeight: 800,
+    cursor: "pointer",
+  },
+  secondaryButton: {
+    display: "inline-block",
+    padding: "10px 12px",
+    borderRadius: 10,
+    background: "#f3f4f6",
+    color: "#111827",
+    textDecoration: "none",
+    fontWeight: 700,
+  },
+  aiBox: {
+    background: "#fef3c7",
+    color: "#78350f",
+    borderRadius: 14,
+    padding: 14,
+    lineHeight: 1.7,
+    minHeight: 150,
+    fontWeight: 600,
+  },
+  searchBarWrap: {
+    marginBottom: 16,
+  },
+  searchInput: {
+    width: "100%",
+    padding: "14px 16px",
+    borderRadius: 14,
+    border: "1px solid #d1d5db",
+    fontSize: 15,
+    boxSizing: "border-box",
+  },
+  loading: {
+    padding: 30,
+    textAlign: "center",
+    color: "#666",
+  },
+  kanban: {
+    display: "grid",
+    gridTemplateColumns: "repeat(3, 1fr)",
+    gap: 16,
+    alignItems: "start",
+  },
+  column: {
+    background: "#fff",
+    borderRadius: 18,
+    padding: 14,
+    border: "1px solid #f3f4f6",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.04)",
+    minHeight: 500,
+  },
+  columnHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    fontWeight: 800,
+    marginBottom: 12,
+    fontSize: 18,
+  },
+  badge: {
+    background: "#fef3c7",
+    color: "#92400e",
+    padding: "4px 10px",
+    borderRadius: 999,
+    fontSize: 12,
+    fontWeight: 800,
+  },
+  cardList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+  },
+  card: {
+    background: "#fffdf5",
+    borderRadius: 16,
+    padding: 14,
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: 800,
+    marginBottom: 8,
+    color: "#111827",
+  },
+  cardLine: {
+    fontSize: 13,
+    color: "#4b5563",
+    marginBottom: 4,
+  },
+  cardActions: {
+    display: "flex",
+    gap: 8,
+    flexWrap: "wrap",
+    marginTop: 10,
+  },
+  smallButton: {
+    padding: "8px 10px",
+    borderRadius: 10,
+    border: "1px solid #d1d5db",
+    background: "#fff",
+    cursor: "pointer",
+    fontSize: 12,
+    fontWeight: 700,
+  },
+};
