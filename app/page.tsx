@@ -1,235 +1,211 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
-type Service = {
-  name: string;
-  icon: string;
-  color: string;
-  eta?: string;
-};
-
-const services: Service[] = [
-  { name: "Bảo dưỡng nhanh", icon: "🔧", color: "#FFC107" },
+/* ================== SERVICE DATA ================== */
+const SERVICES = [
+  { name: "Bảo dưỡng nhanh", icon: "🛠️", color: "#FFC107" },
   { name: "Bảo dưỡng hệ thống gầm", icon: "🚙", color: "#FF9800" },
-  { name: "Thay dầu nhớt động cơ", icon: "🛢️", color: "#2196F3" },
+  { name: "Thay dầu nhớt", icon: "🛢️", color: "#2196F3" },
   { name: "Cân chỉnh thước lái 3D", icon: "⚙️", color: "#9E9E9E" },
   { name: "Lọc gió điều hòa", icon: "❄️", color: "#26C6DA" },
   { name: "Thay lốp xe", icon: "🛞", color: "#607D8B" },
   { name: "Thay ắc quy", icon: "🔋", color: "#3949AB" },
   { name: "Kiểm tra an toàn xe", icon: "✅", color: "#43A047" },
   { name: "Dịch vụ lưu động 24/7", icon: "🚗", color: "#66BB6A", eta: "20–30 phút" },
-  { name: "Dịch vụ khác", icon: "🚘", color: "#90A4AE" },
 ];
 
-function getMaintenanceAdvice(km: number) {
-  if (!km || Number.isNaN(km)) {
-    return "Nhập KM xe để được trợ lý gợi ý cấp bảo dưỡng phù hợp.";
-  }
-  if (km < 5000) {
-    return "Xe còn mới. Khuyến nghị kiểm tra cơ bản, dầu và các hạng mục an toàn.";
-  }
-  if (km < 10000) {
-    return "Khuyến nghị: Bảo dưỡng nhanh, thay dầu nhớt động cơ, kiểm tra lọc gió.";
-  }
-  if (km < 30000) {
-    return "Khuyến nghị: Bảo dưỡng định kỳ, thay dầu, kiểm tra lọc gió, cân chỉnh thước lái 3D nếu xe lệch lái.";
-  }
-  if (km < 60000) {
-    return "Khuyến nghị: Bảo dưỡng tổng thể, ưu tiên hệ thống gầm, phanh, rotuyn, giảm xóc.";
-  }
-  return "Khuyến nghị: Bảo dưỡng lớn, kiểm tra tổng thể gầm, treo, lái, phanh và các hạng mục an toàn.";
-}
-
-export default function Page() {
+/* ================== MAIN ================== */
+export default function CardiyPro() {
   const [selected, setSelected] = useState<string[]>([]);
   const [km, setKm] = useState("");
   const [plate, setPlate] = useState("");
   const [phone, setPhone] = useState("");
+  const [advice, setAdvice] = useState("");
 
-  const kmNumber = Number(km);
-
-  const aiNote = useMemo(() => {
-    let text = "👨‍🔧 Trợ lý dịch vụ:\n";
-
-    if (selected.length > 0) {
-      text += `• Dịch vụ đã chọn: ${selected.join(", ")}\n`;
-    } else {
-      text += "• Hãy chọn dịch vụ cần làm\n";
-    }
-
-    text += `• ${getMaintenanceAdvice(kmNumber)}\n`;
-
-    if (selected.includes("Dịch vụ lưu động 24/7")) {
-      text += "• Đội kỹ thuật lưu động có thể đến trong khoảng 20–30 phút\n";
-    }
-
-    return text.trim();
-  }, [selected, kmNumber]);
-
-  const toggleService = (name: string) => {
+  /* ================== CLICK SERVICE ================== */
+  const toggle = (name: string) => {
     setSelected((prev) =>
-      prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
+      prev.includes(name)
+        ? prev.filter((s) => s !== name)
+        : [...prev, name]
     );
+
     setTimeout(() => {
-      document.getElementById("booking-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 80);
+      document.getElementById("form")?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 200);
   };
 
-  const goBooking = () => {
-    const params = new URLSearchParams({
-      plate,
-      phone,
-      km,
-      service: selected.join(", "),
-    });
-    window.location.href = `https://www.cardiy.vn/?${params.toString()}`;
+  /* ================== AI KM ================== */
+  const suggest = (km: string) => {
+    const k = Number(km);
+
+    if (!k) return "👉 Nhập KM để AI tư vấn bảo dưỡng";
+
+    if (k < 5000)
+      return "Xe mới → kiểm tra cơ bản, dầu, lốp";
+    if (k < 10000)
+      return "Nên thay dầu + lọc gió";
+    if (k < 30000)
+      return "Bảo dưỡng định kỳ + cân chỉnh 3D";
+    if (k < 60000)
+      return "Kiểm tra gầm + hệ thống treo";
+    return "Nên bảo dưỡng tổng thể toàn xe";
   };
 
+  const handleKM = (value: string) => {
+    setKm(value);
+    setAdvice(suggest(value));
+  };
+
+  /* ================== BOOKING ================== */
+  const booking = () => {
+    if (!plate || !phone) {
+      alert("Vui lòng nhập đủ thông tin");
+      return;
+    }
+
+    const msg =
+      "🚗 BOOKING PHI LONG AUTO%0A" +
+      "Biển số: " + plate + "%0A" +
+      "SĐT: " + phone + "%0A" +
+      "KM: " + km + "%0A" +
+      "Dịch vụ: " + selected.join(", ");
+
+    window.open("https://zalo.me/0975767778?text=" + msg, "_blank");
+  };
+
+  /* ================== UI ================== */
   return (
-    <div style={styles.page}>
-      <div style={styles.wrap}>
-        <h1 style={styles.title}>TRỢ LÝ DỊCH VỤ Ô TÔ 🚗</h1>
-        <p style={styles.subtitle}>AI tư vấn nhanh • Chọn dịch vụ • Gợi ý bảo dưỡng • Điều phối lưu động</p>
+    <div style={{ padding: 20, maxWidth: 1100, margin: "auto" }}>
+      <h2 style={{ textAlign: "center", color: "#0A2F5A" }}>
+        🚗 TRỢ LÝ DỊCH VỤ Ô TÔ
+      </h2>
 
-        <div style={styles.grid}>
-          {services.map((s) => {
-            const active = selected.includes(s.name);
-            return (
-              <button
-                key={s.name}
-                onClick={() => toggleService(s.name)}
-                style={{
-                  ...styles.card,
-                  background: active
-                    ? `linear-gradient(180deg, #fff8d6, ${s.color})`
-                    : "#fff",
-                  boxShadow: active ? "0 10px 24px rgba(0,0,0,0.14)" : "none",
-                  transform: active ? "translateY(-3px)" : "translateY(0)",
-                  border: active ? "2px solid #FFC107" : "1px solid #E5E7EB",
-                }}
-              >
-                <div style={{ ...styles.icon, transform: active ? "scale(1.15)" : "scale(1)" }}>{s.icon}</div>
-                <div style={{ ...styles.cardText, fontWeight: active ? 800 : 600 }}>{s.name}</div>
-              </button>
-            );
-          })}
-        </div>
+      {/* GRID */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))",
+          gap: 12,
+          marginTop: 20,
+        }}
+      >
+        {SERVICES.map((s) => {
+          const active = selected.includes(s.name);
 
-        <div style={styles.aiBox}>
-          <pre style={styles.aiText}>{aiNote}</pre>
-        </div>
+          return (
+            <div
+              key={s.name}
+              onClick={() => toggle(s.name)}
+              style={{
+                padding: 18,
+                borderRadius: 16,
+                cursor: "pointer",
+                textAlign: "center",
+                border: active ? "2px solid #FFC107" : "1px solid #ddd",
+                background: active
+                  ? `linear-gradient(180deg, ${s.color}, #FFC107)`
+                  : "#fff",
+                color: active ? "#000" : "#333",
+                transition: "0.35s cubic-bezier(0.4,0,0.2,1)",
+                boxShadow: active
+                  ? "0 10px 25px rgba(255,193,7,0.4)"
+                  : "none",
+              }}
+            >
+              <div style={{ fontSize: 34 }}>{s.icon}</div>
+              <div style={{ marginTop: 6 }}>{s.name}</div>
 
-        <div id="booking-form" style={styles.formRow}>
-          <input
-            value={km}
-            onChange={(e) => setKm(e.target.value.replace(/\D/g, ""))}
-            placeholder="Nhập KM xe"
-            style={styles.input}
-          />
-          <input
-            value={plate}
-            onChange={(e) => setPlate(e.target.value.toUpperCase())}
-            placeholder="Biển số xe"
-            style={styles.input}
-          />
-          <input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="Số điện thoại"
-            style={styles.input}
-          />
-          <button onClick={goBooking} style={styles.button}>
-            ĐẶT LỊCH NGAY
-          </button>
-        </div>
+              {active && s.eta && (
+                <div style={{ fontSize: 12 }}>
+                  ⏱ {s.eta}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* AI BOX */}
+      <div
+        style={{
+          marginTop: 20,
+          padding: 14,
+          background: "#fff3c4",
+          borderRadius: 10,
+          fontWeight: "bold",
+        }}
+      >
+        💡 {advice || "Chọn dịch vụ hoặc nhập KM để AI tư vấn"}
+      </div>
+
+      {/* FORM */}
+      <div id="form" style={{ marginTop: 20 }}>
+        <input
+          placeholder="Nhập KM xe"
+          value={km}
+          onChange={(e) => handleKM(e.target.value)}
+          style={input}
+        />
+
+        <input
+          placeholder="Biển số xe"
+          value={plate}
+          onChange={(e) => setPlate(e.target.value)}
+          style={input}
+        />
+
+        <input
+          placeholder="Số điện thoại"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          style={input}
+        />
+
+        <button onClick={booking} style={btn}>
+          ĐẶT LỊCH NGAY
+        </button>
+      </div>
+
+      {/* LINK HỆ SINH THÁI */}
+      <div style={{ marginTop: 30 }}>
+        <h3>🚀 HỆ SINH THÁI CARDIY</h3>
+
+        <a href="https://www.cardiy.vn/garages" target="_blank">
+          👉 Booking xưởng dịch vụ
+        </a>
+        <br />
+
+        <a href="https://www.cardiy.vn/" target="_blank">
+          👉 Đăng ký tài khoản xe
+        </a>
+        <br />
+
+        <a href="https://www.cardiy.vn/" target="_blank">
+          👉 Tham gia hệ sinh thái ô tô toàn quốc
+        </a>
       </div>
     </div>
   );
 }
 
-const styles: Record<string, React.CSSProperties> = {
-  page: {
-    minHeight: "100vh",
-    background: "#F5F7FB",
-    padding: 20,
-    fontFamily: "Arial, sans-serif",
-  },
-  wrap: {
-    maxWidth: 1120,
-    margin: "0 auto",
-  },
-  title: {
-    textAlign: "center",
-    color: "#0A2F5A",
-    marginBottom: 8,
-    fontSize: 34,
-    fontWeight: 800,
-  },
-  subtitle: {
-    textAlign: "center",
-    color: "#667085",
-    marginBottom: 20,
-    fontSize: 15,
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
-    gap: 14,
-  },
-  card: {
-    borderRadius: 18,
-    padding: 18,
-    textAlign: "center",
-    cursor: "pointer",
-    transition: "all 0.25s ease",
-  },
-  icon: {
-    fontSize: 42,
-    marginBottom: 10,
-    transition: "all 0.25s ease",
-  },
-  cardText: {
-    fontSize: 15,
-    lineHeight: 1.35,
-    color: "#1F2937",
-  },
-  aiBox: {
-    marginTop: 18,
-    background: "#FFF3C4",
-    borderRadius: 14,
-    padding: 16,
-    border: "1px solid #FFE082",
-  },
-  aiText: {
-    margin: 0,
-    whiteSpace: "pre-wrap",
-    fontFamily: "inherit",
-    fontSize: 15,
-    lineHeight: 1.6,
-    color: "#3B3B3B",
-  },
-  formRow: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-    gap: 12,
-    marginTop: 18,
-    alignItems: "center",
-  },
-  input: {
-    padding: "14px 14px",
-    borderRadius: 12,
-    border: "1px solid #D0D5DD",
-    fontSize: 15,
-    outline: "none",
-  },
-  button: {
-    padding: "15px 16px",
-    borderRadius: 14,
-    border: "none",
-    background: "linear-gradient(90deg,#FFC107,#FFB300)",
-    fontWeight: 800,
-    fontSize: 16,
-    cursor: "pointer",
-    color: "#111827",
-  },
+/* ================== STYLE ================== */
+const input = {
+  width: "100%",
+  padding: 12,
+  marginTop: 10,
+  borderRadius: 8,
+  border: "1px solid #ddd",
+};
+
+const btn = {
+  width: "100%",
+  marginTop: 15,
+  padding: 15,
+  background: "#FFC107",
+  border: "none",
+  borderRadius: 10,
+  fontWeight: "bold",
 };
