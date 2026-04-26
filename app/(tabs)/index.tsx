@@ -1,98 +1,177 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+const COLORS = {
+  primary: '#00B14F',
+  bg: '#F5F7FA',
+  white: '#fff'
+};
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const router = useRouter();
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  return (
+    <ScrollView style={{ flex: 1, backgroundColor: COLORS.bg }}>
+
+      {/* HEADER */}
+      <View style={{
+        backgroundColor: COLORS.primary,
+        paddingTop: 60,
+        paddingBottom: 30,
+        paddingHorizontal: 20,
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25
+      }}>
+        <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>
+          🚗 CARDIY
+        </Text>
+        <Text style={{ color: '#DFF5E7', marginTop: 5 }}>
+          Garage Dashboard
+        </Text>
+      </View>
+
+      {/* DASHBOARD (KPI + ACTION GỘP) */}
+      <View style={{ padding: 20 }}>
+
+        <Text style={styles.sectionTitle}>📊 Dashboard</Text>
+
+        {/* KPI */}
+        <View style={styles.kpiWrap}>
+          <View style={styles.kpiCard}>
+            <Text>💰 Doanh thu</Text>
+            <Text style={styles.kpiValue}>0đ</Text>
+          </View>
+
+          <View style={styles.kpiCard}>
+            <Text>🚗 Đang sửa</Text>
+            <Text style={[styles.kpiValue, { color: '#FF9800' }]}>0</Text>
+          </View>
+
+          <View style={styles.kpiCard}>
+            <Text>⏳ Xe chờ</Text>
+            <Text style={[styles.kpiValue, { color: '#2196F3' }]}>0</Text>
+          </View>
+
+          <View style={styles.kpiCard}>
+            <Text>✅ Hoàn thành</Text>
+            <Text style={[styles.kpiValue, { color: '#4CAF50' }]}>0</Text>
+          </View>
+        </View>
+
+        {/* GRID ACTION */}
+        <View style={styles.gridWrap}>
+
+          <TouchableOpacity style={styles.gridCard} onPress={() => router.push('/car-list')}>
+            <Text style={styles.icon}>🚗</Text>
+            <Text>Quản lý xe</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.gridCard} onPress={() => router.push('/receive-car')}>
+            <Text style={styles.icon}>📅</Text>
+            <Text>Đặt lịch</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.gridCard} onPress={() => router.push('/history')}>
+            <Text style={styles.icon}>🔔</Text>
+            <Text>Nhắc lịch</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.gridCard} onPress={() => router.push('/inspection')}>
+            <Text style={styles.icon}>📋</Text>
+            <Text>Kiểm tra xe</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.gridCard} onPress={() => router.push('/work-order')}>
+            <Text style={styles.icon}>🧾</Text>
+            <Text>Sửa chữa</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.gridCard} onPress={() => router.push('/payment')}>
+            <Text style={styles.icon}>💰</Text>
+            <Text>Thanh toán</Text>
+          </TouchableOpacity>
+
+        </View>
+
+      </View>
+
+      {/* CTA */}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push('/receive-car')}
+      >
+        <Text style={{ fontWeight: 'bold', fontSize: 16 }}>
+          🚀 NHẬN XE
+        </Text>
+      </TouchableOpacity>
+
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
+const styles = {
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
+
+  kpiWrap: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 20
+  },
+
+  kpiCard: {
+    width: '48%',
+    backgroundColor: '#fff',
+    padding: 15,
+    borderRadius: 16,
+    marginBottom: 12,
+
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 3,
+  },
+
+  kpiValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 5
+  },
+
+  gridWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between'
+  },
+
+  gridCard: {
+    width: '48%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 16,
     alignItems: 'center',
-    gap: 8,
+    marginBottom: 12,
+
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 3,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+
+  icon: {
+    fontSize: 24,
+    marginBottom: 5
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+
+  button: {
+    backgroundColor: '#FFC107',
+    margin: 20,
+    padding: 18,
+    borderRadius: 14,
+    alignItems: 'center'
+  }
+};
